@@ -1,0 +1,847 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OmniLayout Benchmark</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* 鈹€鈹€ RESET & BASE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #fafafa;
+  color: #1a1a2e;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* 鈹€鈹€ CENTERED WRAPPER 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.container {
+  width: 88%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.container-wide {
+  width: 96%;
+  max-width: 2200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 鈹€鈹€ HERO / TITLE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.hero {
+  text-align: center;
+  padding: 52px 24px 36px;
+  background: linear-gradient(160deg, #0f0c29 0%, #1a1040 40%, #24243e 100%);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(99,102,241,0.18) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(16,185,129,0.12) 0%, transparent 55%),
+              radial-gradient(ellipse at 60% 80%, rgba(245,158,11,0.10) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; z-index: 1; }
+.hero h1 {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #f0f0ff;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+.hero h1 em { font-style: normal; color: #a5b4fc; }
+
+/* 鈹€鈹€ LINK PILL BUTTONS 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.link-pills {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.01em;
+  transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease;
+  font-family: inherit;
+}
+.pill::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0) 100%);
+  transform: translateX(-100%);
+  transition: transform .45s ease;
+}
+.pill:hover::before { transform: translateX(100%); }
+.pill:hover { transform: translateY(-2px) scale(1.04); }
+.pill:active { transform: translateY(0) scale(0.98); }
+
+.pill-paper { background: linear-gradient(135deg, #f97316 0%, #fb923c 40%, #fbbf24 100%); color: #fff; box-shadow: 0 3px 12px rgba(249,115,22,.35); }
+.pill-paper:hover { box-shadow: 0 6px 20px rgba(249,115,22,.50); }
+.pill-code { background: linear-gradient(135deg, #6366f1 0%, #818cf8 50%, #a5b4fc 100%); color: #fff; box-shadow: 0 3px 12px rgba(99,102,241,.35); }
+.pill-code:hover { box-shadow: 0 6px 20px rgba(99,102,241,.50); }
+.pill-data { background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 50%, #67e8f9 100%); color: #0e4e5a; box-shadow: 0 3px 12px rgba(6,182,212,.30); }
+.pill-data:hover { box-shadow: 0 6px 20px rgba(6,182,212,.48); }
+.pill-lb { background: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%); color: #064e3b; box-shadow: 0 3px 12px rgba(16,185,129,.30); }
+.pill-lb:hover { box-shadow: 0 6px 20px rgba(16,185,129,.48); }
+.pill svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+/* 鈹€鈹€ AUTHOR LINE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.hero-authors {
+  font-size: 13px;
+  color: #c7c7e8;
+  margin-bottom: 24px;
+  line-height: 1.9;
+  max-width: 92%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-authors sup { font-size: 9px; color: #a5b4fc; }
+
+/* 鈹€鈹€ NOTICE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.notice { text-align: center; font-size: 13.5px; color: #57606a; max-width: 90%; margin: 0 auto 28px; line-height: 1.65; }
+
+/* 鈹€鈹€ MAIN CONTENT 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.main { padding: 36px 0 64px; background: #fafafa; }
+.section-h2 { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 8px; color: #1a1a2e; letter-spacing: -0.01em; }
+.section-rule { width: 48px; height: 3px; background: linear-gradient(90deg, #6366f1, #10b981); border-radius: 2px; margin: 0 auto 20px; }
+.section-h4 { text-align: center; font-size: 15px; font-weight: 600; color: #374151; margin: 28px 0 10px; }
+
+/* 鈹€鈹€ PERIOD TOGGLE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.period-wrap { text-align: center; margin-bottom: 14px; }
+.period-label { font-size: 14px; font-weight: 500; color: #374151; margin-right: 8px; }
+.period-group { display: inline-flex; border: 1.5px solid #e5e7eb; border-radius: 999px; overflow: hidden; background: #f3f4f6; padding: 3px; gap: 2px; }
+.period-btn { padding: 6px 20px; font-size: 13px; font-weight: 600; cursor: pointer; background: transparent; color: #6b7280; border: none; border-radius: 999px; font-family: inherit; letter-spacing: 0.01em; transition: all .22s cubic-bezier(.34,1.56,.64,1); }
+.period-btn.active { background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%); color: #fff; box-shadow: 0 2px 10px rgba(99,102,241,.45); transform: scale(1.04); }
+.period-btn:hover:not(.active) { background: #e5e7eb; color: #374151; }
+
+/* 鈹€鈹€ TABLE FILTER IN HEADERS 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.table-filter { display: inline-flex; background: #e2e8f0; border-radius: 999px; padding: 3px; margin-top: 8px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); border: 1px solid #cbd5e1; gap: 2px; white-space: nowrap; flex-wrap: nowrap; }
+.filter-btn { font-size: 11px; padding: 4px 10px; cursor: pointer; color: #64748b; border-radius: 999px; font-weight: 700; letter-spacing: 0.02em; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); position: relative; user-select: none; white-space: nowrap; }
+.filter-btn:hover:not(.active) { color: #334155; }
+.filter-btn.active { background: #ffffff; color: #0f172a; box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08); }
+.filter-btn[data-v="open"].active { color: #059669; }
+.filter-btn[data-v="closed"].active { color: #ea580c; }
+
+/* 鈹€鈹€ TABLES 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.table-block { margin-bottom: 44px; }
+.table-caption { font-size: 13.5px; color: #57606a; text-align: center; max-width: 100%; margin: 0 auto 10px; line-height: 1.65; }
+.table-caption strong { color: #111827; }
+.table-scroll { overflow: visible; border: 1px solid #d0d7de; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+table { border-collapse: collapse; width: 100%; background: #fff; font-size: 11.5px; border-spacing: 0; table-layout: auto; border-radius: 10px; overflow: hidden; }
+th {
+  background: linear-gradient(180deg, #f1f3f9 0%, #eaecf5 100%);
+  font-weight: 600;
+  padding: 7px 6px;
+  text-align: center;
+  border: 1px solid #d0d7de;
+  white-space: normal;
+  word-break: break-word;
+  font-size: 11px;
+  line-height: 1.3;
+  color: #374151;
+  vertical-align: middle;
+}
+th.th-left { text-align: left; }
+th.th-filter { min-width: 110px; }
+td { padding: 5px 6px; text-align: center; border: 1px solid #e5e7eb; white-space: normal; word-break: break-word; font-variant-numeric: tabular-nums; font-size: 11.5px; }
+td.td-left { text-align: left; }
+td.td-model { text-align: left; font-weight: 600; font-size: 11.5px; }
+tr.sec-row td {
+  background: linear-gradient(90deg, #1a1040 0%, #24243e 100%);
+  color: #a5b4fc;
+  font-weight: 700;
+  text-align: center;
+  font-size: 11.5px;
+  letter-spacing: 0.5px;
+  padding: 5px 9px;
+  border: 1px solid #2d2b55;
+}
+tr.gray-row td { background: #fafafa; color: #6b7280; }
+tr:hover:not(.sec-row) td { background: #f0f4ff !important; }
+.gbr { border-right: 2px solid #9ca3af !important; }
+.pos { color: #059669; font-weight: 600; }
+.neg { color: #dc2626; font-weight: 600; }
+.dash { color: #c0c0c0; }
+
+/* 鈹€鈹€ PAPER SECTION 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.paper-section {
+  border-top: 1px solid #e5e7eb;
+  padding: 52px 24px 44px;
+  text-align: center;
+  background: #fff;
+}
+.paper-title { font-size: 22px; font-weight: 700; line-height: 1.35; margin-bottom: 12px; color: #1a1a2e; max-width: 100%; margin-left: auto; margin-right: auto; }
+.abstract {
+  font-size: 15px;
+  color: #374151;
+  max-width: 820px;
+  margin: 0 auto 32px;
+  text-align: justify;
+  line-height: 1.85;
+  background: #f8f9ff;
+  border: 1px solid #e0e4f7;
+  border-left: 4px solid #6366f1;
+  border-radius: 0 8px 8px 0;
+  padding: 24px 28px;
+}
+.abstract strong { color: #4f46e5; }
+
+/* 鈹€鈹€ FIGURE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.figure-wrap { text-align: center; margin-bottom: 28px; }
+.figure-img { display: block; width: 100%; max-width: 100%; height: auto; margin: 0 auto 12px; border-radius: 10px; border: 1px solid #d0d7de; background: #fff; }
+.figure-caption { font-size: 13.5px; color: #57606a; max-width: 100%; margin: 0 auto; text-align: center; line-height: 1.65; }
+
+.examples-section { margin: 0 0 34px; text-align: left; }
+.examples-title { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #1a1a2e; }
+.examples-caption { font-size: 13.5px; color: #57606a; max-width: 760px; margin: 0 auto 18px; text-align: center; line-height: 1.65; }
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+.example-card {
+  overflow: hidden;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.example-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1081 / 1510;
+  object-fit: contain;
+  background: #f8fafc;
+}
+.example-label {
+  padding: 8px 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #374151;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+/* 鈹€鈹€ BIBTEX 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.bib-section { border-top: 1px solid #e5e7eb; padding: 40px 24px; background: #fafafa; }
+.bib-title { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #1a1a2e; }
+.bib-wrap { max-width: 100%; margin: 0 auto; position: relative; }
+.bib-box { background: #0f0c29; color: #c7c7e8; font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace; font-size: 13px; padding: 20px 24px; border-radius: 10px; overflow-x: auto; line-height: 1.75; text-align: left; white-space: pre; border: 1px solid #2d2b55; }
+.copy-btn { position: absolute; top: 10px; right: 10px; background: #1a1040; color: #a5b4fc; border: 1px solid #2d2b55; border-radius: 4px; padding: 3px 10px; font-size: 11px; cursor: pointer; font-family: inherit; transition: all .12s; }
+.copy-btn:hover { background: #24243e; color: #e5e7eb; }
+.bib-key { color: #f87171; }
+.bib-field { color: #93c5fd; }
+.bib-val { color: #6ee7b7; }
+
+/* 鈹€鈹€ FOOTER 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+footer { background: #1a1a2e; border-top: 1px solid #2d2b55; padding: 16px 24px; text-align: center; font-size: 12.5px; color: #a5b4fc; }
+footer a { color: #6ee7b7; text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* 鈹€鈹€ BADGE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.badge-closed { display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;background:#fff3e0;color:#c2410c;border:1px solid #fcd9ab; }
+.badge-open   { display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0; }
+.badge-tool   { display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe; }
+
+/* 鈹€鈹€ RESPONSIVE: LARGE DESKTOP 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+@media (min-width: 1600px) {
+  .container { width: 90%; }
+  .container-wide { width: 97%; }
+  table { font-size: 12.5px; }
+  th { font-size: 12px; padding: 8px 10px; }
+  td { font-size: 12.5px; padding: 6px 10px; }
+}
+@media (min-width: 2200px) {
+  .container { width: 88%; }
+  .container-wide { width: 96%; }
+  table { font-size: 13.5px; }
+  th { font-size: 13px; padding: 9px 12px; }
+  td { font-size: 13px; padding: 7px 12px; }
+}
+
+/* 鈹€鈹€ RESPONSIVE: TABLET 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+@media (max-width: 1024px) {
+  .container { width: 94%; padding: 0 16px; }
+  .container-wide { width: 98%; padding: 0 12px; }
+  .example-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* 鈹€鈹€ RESPONSIVE: MOBILE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+@media (max-width: 768px) {
+  .container { width: 100%; padding: 0 12px; }
+  .container-wide { width: 100%; padding: 0 8px; }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { min-width: 900px; table-layout: auto; }
+  th { white-space: nowrap; word-break: normal; }
+  td { white-space: nowrap; word-break: normal; }
+  .hero h1 { font-size: 19px; }
+  .paper-title { font-size: 18px; }
+  .bib-box { font-size: 11px; }
+  .notice { font-size: 12.5px; }
+  .abstract { padding: 16px 18px; font-size: 14px; }
+  .hero-authors { font-size: 12px; }
+  .example-grid { grid-template-columns: 1fr; }
+  .examples-title { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// ICONS
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+const IC = {
+  arxiv: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+  code:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+  data:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+  lb:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+  img:   `<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#c7d2fe" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`
+};
+
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// DATA -TABLE 2 (Oneshot Evaluation)
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// Columns: OO, OoB, RT, HPWL, NC, NS, PRWL, RR, #Vias, Sch., Ref.
+const T1 = [
+  { section: 'Commercial Chatbot Systems', models: [
+    { m:'GPT-5.5', sz:'-', type:'closed', rows:[
+      { i:'Zeroshot',       v:[0.001,0.002,130.07,693.142,150.860,1.778,697.87,0.617,10.00,1.189,0.521] },
+      { i:'Sch. SW-Net.',   v:[0.002,0.003,150.19,406.283,38.263,2.264,182.87,0.71,1.67,0.937,0.593] },
+      { i:'Sch. Sem.',      v:[0.002,0.004,150.56,700.129,46.167,2.263,436.02,0.52,1.50,0.955,0.578] },
+      { i:'Sch. Img',       v:[0.003,0.005,144.93,756.421,82.775,3.028,490.73,0.71,15.00,1.120,0.559] },
+      { i:'Fewshot',        v:[0.001,0.001,122.46,744.253,107.653,1.759,282.75,0.95,1.00,1.063,0.535] },
+    ]},
+    { m:'GPT-5-mini', sz:'-', type:'closed', rows:[
+      { i:'Zeroshot',       v:[0.045,0.028,87.77,809.817,191.327,5.874,113.62,0.186,8.51,1.288,0.486] },
+      { i:'Sch. SW-Net.',   v:[0.084,0.077,70.53,690.602,100.960,5.084,256.29,0.72,1.50,0.924,0.531] },
+      { i:'Sch. Sem.',      v:[0.093,0.058,71.85,792.465,131.560,3.770,465.59,0.33,4.75,0.960,0.514] },
+      { i:'Sch. Img',       v:[0.091,0.030,72.48,868.873,183.280,4.062,342.90,0.65,7.81,1.148,0.494] },
+      { i:'Fewshot',        v:[0.056,0.052,66.33,1041.865,185.980,8.455,115.58,0.77,0.20,1.530,0.437] },
+    ]},
+    { m:'Claude Sonnet 4.6', sz:'-', type:'closed', rows:[
+      { i:'Zeroshot',       v:[0.058,0.067,10.67,823.863,163.020,7.268,203.07,0.455,4.00,1.161,0.486] },
+      { i:'Sch. SW-Net.',   v:[0.055,0.088,10.35,399.893,41.864,2.586,170.24,0.76,1.00,0.923,0.578] },
+      { i:'Sch. Sem.',      v:[0.067,0.059,10.38,737.864,72.356,13.995,274.49,0.60,3.44,0.957,0.548] },
+      { i:'Sch. Img',       v:[0.091,0.062,10.08,720.474,76.200,4.524,259.91,0.57,3.72,1.041,0.539] },
+      { i:'Fewshot',        v:[0.043,0.059,11.47,963.838,168.160,5.205,190.43,0.54,0.00,1.315,0.487] },
+    ]},
+    { m:'Gemini 3.1 Pro-Preview', sz:'-', type:'closed', rows:[
+      { i:'Zeroshot',       v:[0.004,0.006,116.10,777.495,182.000,3.153,419.16,0.340,1.00,1.260,0.502] },
+      { i:'Sch. SW-Net.',   v:[0.002,0.014,127.28,527.990,94.420,2.802,85.50,0.61,0.00,1.275,0.552] },
+      { i:'Sch. Sem.',      v:[0.008,0.013,129.34,724.696,66.796,2.701,353.77,0.63,4.75,1.102,0.552] },
+      { i:'Sch. Img',       v:[0.017,0.019,118.15,659.411,65.960,1.960,341.72,0.74,5.77,1.031,0.577] },
+      { i:'Fewshot',        v:[0.007,0.017,127.48,837.856,156.340,2.351,97.65,0.73,0.80,1.199,0.550] },
+    ]},
+    { m:'Gemini 2.5 Flash-lite', sz:'-', type:'closed', rows:[
+      { i:'Zeroshot',       v:[0.850,0.148,6.50,1436.197,225.700,14.816,192.76,0.204,5.12,1.165,0.486] },
+      { i:'Sch. SW-Net.',   v:[0.446,0.181,6.57,824.682,122.432,5.677,359.90,0.38,2.50,1.196,0.482] },
+      { i:'Sch. Sem.',      v:[0.601,0.156,6.21,956.933,143.556,7.554,285.80,0.21,4.79,1.369,0.456] },
+      { i:'Sch. Img',       v:[0.206,0.154,8.43,1027.042,174.660,8.357,244.11,0.42,3.60,1.026,0.503] },
+      { i:'Fewshot',        v:[0.128,0.170,4.81,1104.440,209.327,4.626,131.82,0.62,0.50,1.530,0.452] },
+    ]},
+  ]},
+  { section: 'Open-Source MLLMs', models: [
+    { m:'LLaMA 4 Maverick', sz:'400B', type:'open', rows:[
+      { i:'Zeroshot',       v:[0.080,0.113,40.67,1003.626,198.120,20.849,122.58,0.228,1.50,1.494,0.478] },
+      { i:'Sch. SW-Net.',   v:[0.084,0.145,32.32,890.628,103.120,9.054,55.82,0.80,0.00,1.296,0.490] },
+      { i:'Sch. Sem.',      v:[0.088,0.101,32.91,911.841,121.860,21.612,191.23,0.38,2.17,1.100,0.508] },
+      { i:'Sch. Img',       v:[0.112,0.119,30.77,1111.042,137.260,7.703,656.90,0.42,7.71,1.244,0.507] },
+      { i:'Fewshot',        v:[0.110,0.084,27.94,1196.294,190.880,18.052,15.86,1.00,0.50,1.547,0.449] },
+    ]},
+    { m:'Ministral 14B', sz:'14B', type:'open', rows:[
+      { i:'Zeroshot',       v:[0.098,0.148,17.33,918.574,169.400,31.316,78.63,0.304,2.20,1.172,0.493] },
+      { i:'Sch. SW-Net.',   v:[0.096,0.186,23.79,718.264,108.900,5.030,72.06,1.00,2.00,1.115,0.504] },
+      { i:'Sch. Sem.',      v:[0.098,0.150,25.42,850.735,102.760,14.505,101.95,0.20,4.33,1.151,0.495] },
+      { i:'Sch. Img',       v:[0.124,0.123,19.23,1112.727,207.720,10.046,158.39,0.45,3.50,1.234,0.486] },
+      { i:'Fewshot',        v:[0.083,0.111,17.24,1175.969,207.980,19.142,548.91,1.00,2.00,1.350,0.474] },
+    ]},
+    { m:'Qwen3.5-9B', sz:'9B', type:'open', rows:[
+      { i:'Zeroshot',       v:[0.104,0.000,460.47,105.045,13.000,0.673,279.67,0.308,6.00,1.520,0.402] },
+      { i:'Sch. SW-Net.',   v:[0.000,0.250,598.24,438.690,99.000,7.615,254.71,0.93,4.25,1.318,0.576] },
+      { i:'Sch. Sem.',      v:[0.086,0.067,380.75,1097.950,31.000,0.854,198.79,0.49,2.25,0.923,0.521] },
+      { i:'Sch. Img',       v:[null,null,574.55,null,null,null,181.37,0.62,4.21,null,null] },
+      { i:'Fewshot',        v:[0.079,0.109,389.54,1228.265,211.833,7.571,174.26,0.81,0.33,1.245,0.449] },
+    ]},
+    { m:'Qwen3.6-35B-A3B', sz:'35B', type:'open', rows:[
+      { i:'Zeroshot',       v:[0.040,0.006,456.81,772.739,168.818,2.073,511.65,0.305,10.55,1.145,0.516] },
+      { i:'Sch. SW-Net.',   v:[0.101,0.059,343.63,273.714,23.000,1.220,208.85,0.69,1.50,0.642,0.571] },
+      { i:'Sch. Sem.',      v:[0.207,0.031,286.55,955.961,196.250,2.351,269.78,0.55,4.22,0.782,0.522] },
+      { i:'Sch. Img',       v:[0.082,0.036,255.28,577.956,73.000,2.359,288.81,0.70,4.19,0.981,0.477] },
+      { i:'Fewshot',        v:[0.031,0.010,324.74,748.225,124.617,1.971,462.58,0.76,1.50,1.108,0.537] },
+    ]},
+  ]},
+  { section: 'Commercial PnR Tools', models: [
+    { m:'Quilter (Quilter, 2026)', sz:'-', type:'tool', rows:[
+      { i:'-', v:[0.023,0.019,5841.00,553.48,46.37,1.65,194.28,0.84,163.27,1.24,0.57] },
+    ]},
+  ]},
+  { section: 'Open-Source PnR Tools', models: [
+    { m:'PCBAgent (Chen et al., 2025a)', sz:'-', type:'tool', rows:[
+      { i:'-', v:[0.41,0.24,316.57,1077.03,372.44,109405.37,244.79,0.42,5.51,0.30,0.41] },
+    ]},
+    { m:'SA-PCB (OpenROAD, 2024)', sz:'-', type:'tool', rows:[
+      { i:'-', v:[0.22,0.28,40.94,1098.81,334.60,129177.56,165.09,0.25,3.44,4.22,0.39] },
+    ]},
+    { m:'NS-Place (Naylor et al., 2001)', sz:'-', type:'tool', rows:[
+      { i:'-', v:[0.73,0.23,10.87,1010.54,295.80,89299.07,168.45,0.23,3.85,1.84,0.38] },
+    ]},
+    { m:'Cypress (Zhang et al., 2025a)', sz:'-', type:'tool', rows:[
+      { i:'-', v:[0.24,0.18,26.83,994.54,332.59,128294.67,300.61,0.33,4.90,4.68,0.49] },
+    ]},
+    { m:'Chen et al. (Chen et al., 2025b)', sz:'-', type:'tool', rows:[
+      { i:'-', v:[0.19,0.20,131.37,602.21,130.03,22950.45,369.99,0.62,6.11,3.19,0.86] },
+    ]},
+    { m:'Human Engineer (Ref. Layout)', sz:'-', type:'tool', rows:[
+      { i:'-', v:[0.00,0.00,'-',579.73,115.25,19674.42,140.89,1.00,15.4,1.01,1.00] },
+    ]},
+  ]},
+];
+
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// DATA -TABLE 3 (Agentic Evaluation)
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// Columns: OO, OoB, RT, HPWL, NC, NS, PRWL, RR, #Vias, Sch., Ref., Step
+const T2 = [
+  { section: 'Commercial Chatbot Systems', models: [
+    { m:'GPT-5.5', sz:'-', type:'closed', rows:[
+      { i:'Visualization',   v:[0.000,0.000,327.869,622.557,58.700,0.959,113.94,0.591,0.00,0.966,0.586,3.375] },
+      { i:'Geo. Check',      v:[0.000,0.000,295.334,276.094,2.250,0.918,201.28,0.631,8.00,0.893,0.538,2.200] },
+      { i:'Routing Score',   v:[0.000,0.000,517.918,281.964,17.250,0.953,163.17,0.735,2.00,1.000,0.552,4.750] },
+      { i:'All Tools',       v:[0.007,0.019,351.385,279.563,5.167,0.723,551.83,0.509,2.00,0.675,0.569,4.510] },
+    ]},
+    { m:'GPT-5-mini', sz:'-', type:'closed', rows:[
+      { i:'Visualization',   v:[0.026,0.000,146.935,664.691,102.600,3.702,387.20,0.370,2.00,1.336,0.499,3.080] },
+      { i:'Geo. Check',      v:[0.036,0.000,813.394,492.606,100.000,1.882,222.05,0.347,7.00,1.569,0.465,16.800] },
+      { i:'Routing Score',   v:[0.001,0.000,522.033,573.106,25.000,2.223,530.78,0.200,8.00,1.633,0.429,12.400] },
+      { i:'All Tools',       v:[0.021,0.011,1447.600,241.864,39.250,4.624,204.42,0.300,5.00,1.327,0.400,29.840] },
+    ]},
+    { m:'Claude Sonnet 4.6', sz:'-', type:'closed', rows:[
+      { i:'Visualization',   v:[0.017,0.000,186.806,288.944,43.857,3.923,132.57,0.540,3.67,1.344,0.553,4.680] },
+      { i:'Geo. Check',      v:[0.002,0.000,546.897,352.707,31.667,1.519,380.68,0.506,7.00,1.029,0.515,11.000] },
+      { i:'Routing Score',   v:[0.043,0.009,509.824,339.054,41.000,1.728,270.42,0.614,2.00,1.093,0.519,14.000] },
+      { i:'All Tools',       v:[0.004,0.014,857.961,455.474,46.125,1.728,343.92,0.638,5.50,1.829,0.411,18.806] },
+    ]},
+    { m:'Gemini 3.1 Pro-Preview', sz:'-', type:'closed', rows:[
+      { i:'Visualization',   v:[0.050,0.000,211.613,306.256,13.500,1.779,84.35,0.586,0.00,0.920,0.713,2.125] },
+      { i:'Geo. Check',      v:[0.007,0.000,417.642,385.542,34.000,1.662,347.12,0.484,5.00,0.852,0.553,3.400] },
+      { i:'Routing Score',   v:[0.015,0.013,441.500,1145.583,436.667,1.724,112.59,0.480,4.3,0.942,0.525,3.000] },
+      { i:'All Tools',       v:[0.000,0.000,555.006,370.560,-3.000,0.617,50.45,0.455,1.00,1.070,0.520,5.041] },
+    ]},
+    { m:'Gemini 2.5 Flash-lite', sz:'-', type:'closed', rows:[
+      { i:'Visualization-', v:[0.094,0.118,345.710,238.111,10.000,3.127,147.81,0.667,4.00,1.372,0.404,6.818] },
+      { i:'Geo. Check',      v:[0.091,0.000,29.649,306.526,31.500,1.256,197.88,0.677,7.00,0.957,0.505,1.000] },
+      { i:'Routing Score',   v:[0.081,0.000,864.272,220.130,27.000,1.965,130.44,0.274,5.00,2.084,0.406,20.000] },
+      { i:'All Tools-', v:[0.000,0.000,104.002,121.400,24.000,16.032,49.83,0.172,6.87,1.137,0.760,12.378] },
+    ]},
+  ]},
+  { section: 'Open-Source MLLMs', models: [
+    { m:'LLaMA 4 Maverick', sz:'400B', type:'open', rows:[
+      { i:'Visualization',   v:[0.111,0.141,178.135,373.654,79.600,3.525,142.07,0.248,4.33,1.413,0.527,4.909] },
+      { i:'Geo. Check',      v:[0.099,0.040,579.333,369.272,23.000,1.696,108.29,0.599,3.00,2.308,0.362,19.667] },
+      { i:'Routing Score',   v:[0.107,0.040,831.474,391.170,44.250,2.404,175.97,0.562,4.50,2.282,0.371,19.800] },
+      { i:'All Tools',       v:[0.059,0.167,1521.404,516.834,21.000,1.433,43.92,0.287,1.00,0.986,0.545,46.940] },
+    ]},
+    { m:'Ministral 14B', sz:'14B', type:'open', rows:[
+      { i:'Visualization',   v:[0.130,0.047,72.987,691.764,51.714,17.187,126.68,0.252,0.50,1.237,0.470,2.870] },
+      { i:'Geo. Check',      v:[0.004,0.038,249.803,572.982,25.000,2.359,541.25,0.167,8.00,2.056,0.418,9.750] },
+      { i:'Routing Score',   v:[0.067,0.074,169.451,437.925,70.667,2.356,179.62,0.530,2.50,1.576,0.421,8.250] },
+      { i:'All Tools',       v:[0.060,0.027,1320.835,708.056,115.400,4.152,276.47,0.449,3.00,2.012,0.377,41.673] },
+    ]},
+    { m:'Qwen3.5-9B', sz:'9B', type:'open', rows:[
+      { i:'Visualization',   v:[null,null,null,null,null,null,null,null,null,null,null,null] },
+      { i:'Geo. Check',      v:[null,null,null,null,null,null,null,null,null,null,null,null] },
+      { i:'Routing Score',   v:[null,null,null,null,null,null,null,null,null,null,null,null] },
+      { i:'All Tools',       v:[null,null,null,null,null,null,null,null,null,null,null,null] },
+    ]},
+    { m:'Qwen3.6-35B-A3B', sz:'35B', type:'open', rows:[
+      { i:'Visualization',   v:[null,null,null,null,null,null,null,null,null,null,null,null] },
+      { i:'Geo. Check',      v:[null,null,null,null,null,null,null,null,null,null,null,null] },
+      { i:'Routing Score',   v:[null,null,null,null,null,null,null,null,null,null,null,null] },
+      { i:'All Tools',       v:[null,null,null,null,null,null,null,null,null,null,null,null] },
+    ]},
+  ]},
+];
+
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// VALUE FORMATTER
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+function V(v) {
+  if (v === null || v === undefined) return `<span class="dash">-</span>`;
+  if (typeof v === 'string') {
+    if (!v || v === '---' || v === '-') return `<span class="dash">-</span>`;
+    if (v.endsWith('%')) {
+      const neg = v.startsWith('-');
+      return neg ? `<span class="neg">${v}</span>` : `<span class="pos">${v}</span>`;
+    }
+    return v;
+  }
+  if (typeof v === 'number') {
+    if (Number.isInteger(v) || v >= 100) return v.toFixed(2);
+    return v.toFixed(3);
+  }
+  return String(v);
+}
+
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// BADGE (used in filter legend only)
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+function badge(type) {
+  if (type === 'closed') return `<span class="badge-closed">Closed</span>`;
+  if (type === 'tool')   return `<span class="badge-tool">Tool</span>`;
+  return `<span class="badge-open">Open</span>`;
+}
+
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// BUILD TABLE 1 -Oneshot
+// Paper columns: Model | Size | Input Data | OO | OoB | RT | HPWL | NC | NS | PRWL | RR | #Vias | Sch. | Ref.
+// Groups: Geometric Legality (OO,OoB,RT) | Routability (HPWL,NC,NS,PRWL,RR,#Vias) | Electrical Functionality (Sch.,Ref.)
+// v indices:  0=OO, 1=OoB, 2=RT, 3=HPWL, 4=NC, 5=NS, 6=PRWL, 7=RR, 8=#Vias, 9=Sch., 10=Ref.
+// gbr after: RT(2), #Vias(8)  -these are the group-right borders
+const GBR_T1 = new Set([2, 8]);
+
+function buildT1() {
+  let body = '';
+  T1.forEach(sec => {
+    // 3 fixed cols (Model, Size, Input) + 11 metric cols = 14 total
+    body += `<tr class="sec-row"><td colspan="14">${sec.section}</td></tr>`;
+    sec.models.forEach(m => {
+      m.rows.forEach((row, ri) => {
+        body += `<tr data-type="${m.type}">`;
+        if (ri === 0) {
+          body += `<td class="td-model" rowspan="${m.rows.length}">${m.m}</td>`;
+          body += `<td rowspan="${m.rows.length}" style="text-align:center">${m.sz}</td>`;
+        }
+        body += `<td class="td-left" style="font-size:11px;color:#555">${row.i}</td>`;
+        // only first 11 values (drop old col 11 which was extra)
+        row.v.slice(0,11).forEach((val, vi) => {
+          const gb = GBR_T1.has(vi) ? ' gbr' : '';
+          body += `<td class="${gb.trim()}">${V(val)}</td>`;
+        });
+        body += '</tr>';
+      });
+    });
+  });
+
+  return `
+  <div class="table-scroll" id="tableT1"><table>
+    <thead>
+      <tr>
+        <th class="th-left" rowspan="2">Model</th>
+        <th rowspan="2">Size</th>
+        <th rowspan="2">Input<br>Data</th>
+        <th colspan="3" class="gbr">Geometric Legality</th>
+        <th colspan="6" class="gbr">Routability</th>
+        <th colspan="2">Electrical Functionality</th>
+      </tr>
+      <tr>
+        <th>OO</th><th>OoB</th><th class="gbr">RT</th>
+        <th>HPWL</th><th>NC</th><th>NS</th><th>PRWL</th><th>RR</th><th class="gbr">#Vias</th>
+        <th>Sch.</th><th>Ref.</th>
+      </tr>
+    </thead>
+    <tbody>${body}</tbody>
+  </table></div>`;
+}
+
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// BUILD TABLE 2 -Agentic
+// Paper columns: Model | Size | Input Data | OO | OoB | RT | HPWL | NC | NS | PRWL | RR | #Vias | Sch. | Ref. | Step
+// v indices: 0=OO,1=OoB,2=RT,3=HPWL,4=NC,5=NS,6=PRWL,7=RR,8=#Vias,9=Sch.,10=Ref.,11=Step
+// gbr after: RT(2), #Vias(8), Ref.(10)
+const GBR_T2 = new Set([2, 8, 10]);
+
+function buildT2() {
+  let body = '';
+  T2.forEach(sec => {
+    // 3 fixed + 12 metric cols = 15 total
+    body += `<tr class="sec-row"><td colspan="15">${sec.section}</td></tr>`;
+    sec.models.forEach(m => {
+      m.rows.forEach((row, ri) => {
+        body += `<tr data-type="${m.type}">`;
+        if (ri === 0) {
+          body += `<td class="td-model" rowspan="${m.rows.length}">${m.m}</td>`;
+          body += `<td rowspan="${m.rows.length}" style="text-align:center">${m.sz}</td>`;
+        }
+        body += `<td class="td-left" style="font-size:11px;color:#555">${row.i}</td>`;
+        row.v.forEach((val, vi) => {
+          const gb = GBR_T2.has(vi) ? ' gbr' : '';
+          body += `<td class="${gb.trim()}">${V(val)}</td>`;
+        });
+        body += '</tr>';
+      });
+    });
+  });
+
+  return `
+  <div class="table-scroll" id="tableT2"><table>
+    <thead>
+      <tr>
+        <th class="th-left" rowspan="2">Model</th>
+        <th rowspan="2">Size</th>
+        <th rowspan="2">Input<br>Data</th>
+        <th colspan="3" class="gbr">Geometric Legality</th>
+        <th colspan="6" class="gbr">Routability</th>
+        <th colspan="2" class="gbr">Electrical Functionality</th>
+        <th rowspan="2">Agentic<br>Step</th>
+      </tr>
+      <tr>
+        <th>OO</th><th>OoB</th><th class="gbr">RT</th>
+        <th>HPWL</th><th>NC</th><th>NS</th><th>PRWL</th><th>RR</th><th class="gbr">#Vias</th>
+        <th>Sch.</th><th class="gbr">Ref.</th>
+      </tr>
+    </thead>
+    <tbody>${body}</tbody>
+  </table></div>`;
+}
+
+const EXAMPLE_GIFS = [
+  { label: 'GPT-5.5', src: 'figs/gpt55_example.gif' },
+  { label: 'GPT-5 Mini', src: 'figs/gpt5mini_example.gif' },
+  { label: 'Claude', src: 'figs/claude_example.gif' },
+  { label: 'Gemini 3.1 Pro', src: 'figs/gemini31proexample.gif' },
+  { label: 'Gemini 2.5 Flash Lite', src: 'figs/gemin25falshliteexample.gif' },
+  { label: 'Llama', src: 'figs/llama_example.gif' },
+  { label: 'Ministral', src: 'figs/ministral_example.gif' }
+];
+
+function buildExampleGallery() {
+  return EXAMPLE_GIFS.map(item => `
+    <figure class="example-card">
+      <img src="${item.src}" alt="${item.label} PCB placement example animation" loading="lazy">
+      <figcaption class="example-label">${item.label}</figcaption>
+    </figure>
+  `).join('');
+}
+
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// BIBTEX
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+const BIB_RAW = `@article{lu2026omnilayout,
+  title={OmniLayout: A Schematic-Coupled Multimodal Benchmark for Constraint-Aware Geometric Reasoning in PCB Layout},
+  author={Lu, Taiting and Lin, Kaiyuan and Wang, Mingjia and Ye, Haolin and Liu, Runze and Tian, Yuxin and Melkonyan, Vahe and Wang, Haoyu and Wang, Muchuan and Hong, Chufan and Yang, Yifan and Chen, Sung-Liang and Chen, Yi-Chao and Jin, Yincheng and Gowda, Mahanth},
+  journal={ACL ARR 2026},
+  year={2026}
+}`;
+
+const BIB_HTML = `<span class="bib-key">@article</span>{lu2026omnilayout,
+  <span class="bib-field">title</span>={<span class="bib-val">OmniLayout: A Schematic-Coupled Multimodal Benchmark for Constraint-Aware Geometric Reasoning in PCB Layout</span>},
+  <span class="bib-field">author</span>={<span class="bib-val">Lu, Taiting and Lin, Kaiyuan and Wang, Mingjia and Ye, Haolin and Liu, Runze and Tian, Yuxin and Melkonyan, Vahe and Wang, Haoyu and Wang, Muchuan and Hong, Chufan and Yang, Yifan and Chen, Sung-Liang and Chen, Yi-Chao and Jin, Yincheng and Gowda, Mahanth</span>},
+  <span class="bib-field">journal</span>={<span class="bib-val">ACL ARR 2026</span>},
+  <span class="bib-field">year</span>={<span class="bib-val">2026</span>}
+}`;
+
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// RENDER
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+document.getElementById('app').innerHTML = `
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1>OmniLayout: A Schematic-Coupled Multimodal Benchmark for<br><em>Constraint-Aware Geometric Reasoning in PCB Layout</em></h1>
+    <div class="hero-authors">
+      Taiting Lu, Kaiyuan Lin, Mingjia Wang, Haolin Ye, Runze Liu, Yuxin Tian,
+      Vahe Melkonyan, Haoyu Wang, Muchuan Wang, Chufan Hong,<br>
+      Yifan Yang, Sung-Liang Chen, Yi-Chao Chen, Yincheng Jin, Mahanth Gowda
+    </div>
+    <div class="link-pills">
+      <a class="pill pill-paper" href="#" target="_blank">${IC.arxiv} arXiv</a>
+      <a class="pill pill-code"  href="#" target="_blank">${IC.code} Code</a>
+      <a class="pill pill-data"  href="#" target="_blank">${IC.data} Data</a>
+      <a class="pill pill-lb"    href="#" target="_blank">${IC.lb} Huggingface</a>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="container-wide">
+
+    <div class="examples-section">
+      <div class="examples-title">Qualitative Placement Examples</div>
+      <p class="examples-caption">
+        Animated examples from seven evaluated models, shown in a compact responsive gallery for side-by-side comparison.
+      </p>
+      <div class="example-grid">
+        ${buildExampleGallery()}
+      </div>
+    </div>
+
+    <h2 class="section-h2" id="leaderboard">Leaderboard</h2>
+    <div class="section-rule"></div>
+
+    <div class="period-wrap">
+      <span class="period-label">Select Period:</span>
+      <div class="period-group">
+        <button class="period-btn active" onclick="setPeriod(this,'all')">All Time</button>
+        <button class="period-btn" onclick="setPeriod(this,'2026')">2026</button>
+        <button class="period-btn" onclick="setPeriod(this,'2025')">2025</button>
+      </div>
+    </div>
+
+    <p class="notice">
+      We aim to update this benchmark regularly and welcome community contributions.
+      If you have open-source models or accessible APIs and would like to share evaluation results, please contact us.
+    </p>
+
+    <h4 class="section-h4">Table 2 -Zero-shot / Oneshot Evaluation of LMMs on PCB Component Placement</h4>
+    <div class="table-block">
+      <p class="table-caption">
+        <strong>OO</strong> = total overlapping area between components &nbsp;|&nbsp;
+        <strong>OoB</strong> = components placed outside board boundary &nbsp;|&nbsp;
+        <strong>RT</strong> = inference time (s) &nbsp;|&nbsp;
+        <strong>HPWL</strong> = half-perimeter wirelength &nbsp;|&nbsp;
+        <strong>NC</strong> = number of crossings &nbsp;|&nbsp;
+        <strong>NS</strong> = avg. net separation distance &nbsp;|&nbsp;
+        <strong>PRWL</strong> = predicted routed wirelength &nbsp;|&nbsp;
+        <strong>RR</strong> = fraction of successfully routed nets &nbsp;|&nbsp;
+        <strong>#Vias</strong> = number of vias &nbsp;|&nbsp;
+        <strong>Sch.</strong> / <strong>Ref.</strong> = electrical functionality scores vs. schematic / reference layout.
+      </p>
+      <div style="text-align:right;margin-bottom:6px">
+        <span style="font-size:12px;color:#555;margin-right:8px">Filter:</span>
+        <span class="table-filter">
+          <span class="filter-btn active" data-v="all" onclick="filterTable('T1','all',this)">All</span>
+          <span class="filter-btn" data-v="closed" onclick="filterTable('T1','closed',this)">Closed</span>
+          <span class="filter-btn" data-v="open" onclick="filterTable('T1','open',this)">Open</span>
+          <span class="filter-btn" data-v="tool" onclick="filterTable('T1','tool',this)">Tool</span>
+        </span>
+      </div>
+      ${buildT1()}
+    </div>
+
+    <h4 class="section-h4">Table 3 -Agentic Evaluation of LMMs on PCB Component Placement</h4>
+    <div class="table-block">
+      <p class="table-caption">
+        <strong>Visualization</strong> = layout visualization by custom EDA rendering engine &nbsp;|&nbsp;
+        <strong>Geo. Check</strong> = offline overlap checking via geometric algorithm &nbsp;|&nbsp;
+        <strong>Routing Score</strong> = HPWL-based routing quality feedback &nbsp;|&nbsp;
+        <strong>All Tools</strong> = all aforementioned tools provided simultaneously &nbsp;|&nbsp;
+        <strong>Agentic Step</strong> = average number of tool-use steps to reach final placement.
+      </p>
+      <div style="text-align:right;margin-bottom:6px">
+        <span style="font-size:12px;color:#555;margin-right:8px">Filter:</span>
+        <span class="table-filter">
+          <span class="filter-btn active" data-v="all" onclick="filterTable('T2','all',this)">All</span>
+          <span class="filter-btn" data-v="closed" onclick="filterTable('T2','closed',this)">Closed</span>
+          <span class="filter-btn" data-v="open" onclick="filterTable('T2','open',this)">Open</span>
+        </span>
+      </div>
+      ${buildT2()}
+    </div>
+
+  </div>
+</div>
+
+<div class="paper-section" id="paper">
+  <div class="container">
+
+    <div class="paper-title">
+      OmniLayout: A Schematic-Coupled Multimodal Benchmark for<br>Constraint-Aware Geometric Reasoning in PCB Layout
+    </div>
+
+    <div class="figure-wrap">
+      <img class="figure-img" src="figs/dataset_overview-1.png" alt="Figure 1 dataset overview">
+      <p class="figure-caption">
+        <strong>Figure 1:</strong>
+        Large language models (LLMs) fail to perform reliable PCB layout placement under geometric and electrical constraints.
+        Frequent overlap violations (highlighted by dashed red circles) reveal substantial weaknesses in spatial reasoning and constraint-aware layout generation.
+      </p>
+    </div>
+
+    <p class="abstract">
+      Recent large language models (LLMs) have demonstrated remarkable progress in 3D spatial reasoning, spatial grounding,
+      and fine-grained geometric understanding. However, their ability to reason about densely packed object placement under
+      strict spatial and functional constraints remains largely unexplored, despite being a fundamental challenge in practical
+      electronic design automation (EDA) workflows. To bridge this gap, we introduce <strong>OmniLayout</strong>, the first
+      benchmark designed to evaluate LLMs on printed-circuit-board (PCB) layout placement reasoning under real-world geometric,
+      routing, and connectivity constraints. OmniLayout contains 1,681 industrial-grade schematic-coupled PCB layouts and includes
+      four tasks: (1) geometric reasoning for IC physical placement, with 77.24K placement instances constrained within PCB board
+      boundaries; (2) routability-aware placement reasoning, generating physically valid component placements; (3) electrical
+      functionality, preserving schematic-specified connectivity and electronic functional correctness; and (4) tool-augmented
+      agentic reasoning, invoking external tools to accomplish (1)-3). Our results reveal substantial limitations of current
+      LMMs in PCB layout placement, including weak geometric reasoning, poor routability optimization, and inconsistent
+      preservation of electrical functionality.
+    </p>
+
+  </div>
+</div>
+
+<div class="bib-section" id="bibtex">
+  <div class="container">
+    <div class="bib-title">BibTeX</div>
+    <div class="bib-wrap">
+      <div class="bib-box"><button class="copy-btn" id="copyBtn" onclick="copyBib()">Copy</button>${BIB_HTML}</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  OmniLayout Benchmark &nbsp;路&nbsp; 2026 &nbsp;路&nbsp;
+  Website template inspired by <a href="https://99franklin.github.io/ocrbench_v2/" target="_blank">OCRBench v2</a>
+</footer>
+`;
+
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// INTERACTIONS
+// 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+function setPeriod(btn, period) {
+  document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function filterTable(tableId, value, btn) {
+  const wrap = btn.closest('.table-filter');
+  wrap.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const tbody = document.querySelector(`#table${tableId} tbody`);
+  tbody.querySelectorAll('tr[data-type]').forEach(tr => {
+    if (value === 'all' || tr.dataset.type === value) {
+      tr.style.display = '';
+    } else {
+      tr.style.display = 'none';
+    }
+  });
+}
+
+function copyBib() {
+  navigator.clipboard.writeText(BIB_RAW).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+  }).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = BIB_RAW;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
+
+
+
