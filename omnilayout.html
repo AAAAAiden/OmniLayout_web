@@ -211,6 +211,38 @@ tr:hover:not(.sec-row) td { background: #f0f4ff !important; }
 .examples-section { margin: 0 0 34px; text-align: left; }
 .examples-title { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #1a1a2e; }
 .examples-caption { font-size: 13.5px; color: #57606a; max-width: 760px; margin: 0 auto 18px; text-align: center; line-height: 1.65; }
+.examples-note { clear: both; font-size: 12.5px; color: #6b7280; text-align: center; margin: 34px auto 0; line-height: 1.5; }
+.layer-legend {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  justify-content: center;
+  gap: 8px 24px;
+  margin: 0 auto 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.legend-swatch {
+  width: 32px;
+  height: 13px;
+  border: 3px solid transparent;
+  flex: 0 0 auto;
+}
+.legend-board { background: #202020; }
+.legend-th-pads {
+  background: repeating-linear-gradient(-45deg, #fff 0 5px, #585858 5px 8px);
+  border: 2px solid #585858;
+}
+.legend-top-components { background: #f5a0a0; border-color: #d54343; }
+.legend-top-smd { background: #c48ad4; border-color: #7c2a91; }
+.legend-back-components { background: #a9c0d2; border-color: #486f8c; }
+.legend-back-smd { background: #67cdbd; border-color: #2c8f7e; }
 .example-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -233,11 +265,16 @@ tr:hover:not(.sec-row) td { background: #f0f4ff !important; }
 }
 .example-label {
   padding: 8px 10px;
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 14.5px;
+  font-weight: 700;
   color: #374151;
   border-top: 1px solid #e5e7eb;
   text-align: center;
+}
+.example-label-featured {
+  font-size: 17px;
+  font-weight: 800;
+  color: #111827;
 }
 
 /* 鈹€鈹€ BIBTEX 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
@@ -300,6 +337,7 @@ footer a:hover { text-decoration: underline; }
   .hero-authors { font-size: 12px; }
   .example-grid { grid-template-columns: 1fr; }
   .examples-title { font-size: 18px; }
+  .layer-legend { grid-template-columns: 1fr; justify-items: start; width: max-content; max-width: 100%; }
 }
 </style>
 </head>
@@ -486,7 +524,7 @@ const T2 = [
 // VALUE FORMATTER
 // 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 function V(v) {
-  if (v === null || v === undefined) return `<span class="dash">-</span>`;
+  if (v === null || v === undefined) return `<span class="dash">N/A</span>`;
   if (typeof v === 'string') {
     if (!v || v === '---' || v === '-') return `<span class="dash">-</span>`;
     if (v.endsWith('%')) {
@@ -614,23 +652,83 @@ function buildT2() {
   </table></div>`;
 }
 
-const EXAMPLE_GIFS = [
-  { label: 'GPT-5.5', src: 'figs/gpt55_example.gif' },
-  { label: 'GPT-5 Mini', src: 'figs/gpt5mini_example.gif' },
-  { label: 'Claude', src: 'figs/claude_example.gif' },
-  { label: 'Gemini 3.1 Pro', src: 'figs/gemini31proexample.gif' },
-  { label: 'Gemini 2.5 Flash Lite', src: 'figs/gemin25falshliteexample.gif' },
-  { label: 'Llama', src: 'figs/llama_example.gif' },
-  { label: 'Ministral', src: 'figs/ministral_example.gif' }
+const EXAMPLE_ITEMS = [
+  { type: 'static', label: 'Human Engineer Reference Design', src: 'figs/reference.png', featured: true },
+  { type: 'gif', label: 'GPT-5.5', src: 'figs/gpt55_example.gif', still: 'figs/gpt55_example_last.png', duration: 3200 },
+  { type: 'gif', label: 'GPT-5 Mini', src: 'figs/gpt5mini_example.gif', still: 'figs/gpt5mini_example_last.png', duration: 40800 },
+  { type: 'gif', label: 'Claude Sonnet 4.6', src: 'figs/claude_example.gif', still: 'figs/claude_example_last.png', duration: 40800 },
+  { type: 'gif', label: 'Gemini 3.1 Pro', src: 'figs/gemini31proexample.gif', still: 'figs/gemini31proexample_last.png', duration: 9600 },
+  { type: 'gif', label: 'Gemini 2.5 Flash Lite', src: 'figs/gemin25falshliteexample.gif', still: 'figs/gemin25falshliteexample_last.png', duration: 8000 },
+  { type: 'gif', label: 'LLaMA 4 Maverick', src: 'figs/llama_example.gif', still: 'figs/llama_example_last.png', duration: 40800 },
+  { type: 'gif', label: 'Ministral 14B', src: 'figs/ministral_example.gif', still: 'figs/ministral_example_last.png', duration: 40800 }
 ];
 
 function buildExampleGallery() {
-  return EXAMPLE_GIFS.map(item => `
-    <figure class="example-card">
-      <img src="${item.src}" alt="${item.label} PCB placement example animation" loading="lazy">
-      <figcaption class="example-label">${item.label}</figcaption>
-    </figure>
-  `).join('');
+  return EXAMPLE_ITEMS.map(item => {
+    let media = '';
+    if (item.type === 'gif') {
+      media = `<img class="synced-gif" src="${item.still}" data-gif="${item.src}" data-still="${item.still}" data-duration="${item.duration}" alt="${item.label} PCB placement example animation" loading="lazy">`;
+    } else if (item.type === 'static') {
+      media = `<img src="${item.src}" alt="${item.label} PCB placement reference" loading="lazy">`;
+    }
+
+    return `
+      <figure class="example-card">
+        ${media}
+        <figcaption class="example-label${item.featured ? ' example-label-featured' : ''}">${item.label}</figcaption>
+      </figure>
+    `;
+  }).join('');
+}
+
+const EXAMPLE_HOLD_MS = 10000;
+
+function preloadImage(src) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = resolve;
+    img.onerror = resolve;
+    img.src = src;
+  });
+}
+
+async function initSyncedGifGallery() {
+  const gifs = Array.from(document.querySelectorAll('.synced-gif'));
+  if (!gifs.length) return;
+
+  const gifItems = EXAMPLE_ITEMS.filter(item => item.type === 'gif');
+  await Promise.all(gifItems.flatMap(item => [
+    preloadImage(item.src),
+    preloadImage(item.still)
+  ]));
+
+  const loopDuration = Math.max(...gifs.map(img => Number(img.dataset.duration))) + EXAMPLE_HOLD_MS;
+  const timers = [];
+  let loopId = 0;
+
+  function clearTimers() {
+    while (timers.length) window.clearTimeout(timers.pop());
+  }
+
+  function restartGif(img, syncId) {
+    img.src = `${img.dataset.gif}#sync-${syncId}`;
+  }
+
+  function startLoop() {
+    clearTimers();
+    const syncId = loopId + 1;
+    loopId = syncId;
+    gifs.forEach(img => {
+      restartGif(img, syncId);
+      timers.push(window.setTimeout(() => {
+        img.src = img.dataset.still;
+      }, Number(img.dataset.duration)));
+    });
+
+    timers.push(window.setTimeout(startLoop, loopDuration));
+  }
+
+  startLoop();
 }
 
 // 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
@@ -678,11 +776,20 @@ document.getElementById('app').innerHTML = `
     <div class="examples-section">
       <div class="examples-title">Qualitative Placement Examples</div>
       <p class="examples-caption">
-        Animated examples from seven evaluated models, shown in a compact responsive gallery for side-by-side comparison.
+        Model placement examples and engineer reference placement shown in a compact responsive gallery for side-by-side comparison.
       </p>
+      <div class="layer-legend" aria-label="Layer legend">
+        <span class="legend-item"><span class="legend-swatch legend-board"></span>Board</span>
+        <span class="legend-item"><span class="legend-swatch legend-th-pads"></span>TH pads</span>
+        <span class="legend-item"><span class="legend-swatch legend-top-components"></span>Top-side components</span>
+        <span class="legend-item"><span class="legend-swatch legend-top-smd"></span>Top-side SMD pads</span>
+        <span class="legend-item"><span class="legend-swatch legend-back-components"></span>Back-side components</span>
+        <span class="legend-item"><span class="legend-swatch legend-back-smd"></span>Back-side SMD pads</span>
+      </div>
       <div class="example-grid">
         ${buildExampleGallery()}
       </div>
+      <p class="examples-note">Qwen3.5-9B and Qwen3.6-35B-A3B did not produce valid placement outputs for this example.</p>
     </div>
 
     <h2 class="section-h2" id="leaderboard">Leaderboard</h2>
@@ -799,6 +906,7 @@ document.getElementById('app').innerHTML = `
   Website template inspired by <a href="https://99franklin.github.io/ocrbench_v2/" target="_blank">OCRBench v2</a>
 </footer>
 `;
+initSyncedGifGallery();
 
 // 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 // INTERACTIONS
