@@ -206,13 +206,15 @@ tr:hover:not(.sec-row) td { background: #f0f4ff !important; }
 .examples-note { clear: both; font-size: 12.5px; color: #6b7280; text-align: center; margin: 34px auto 0; line-height: 1.5; }
 .layer-legend {
   display: grid;
-  grid-template-columns: repeat(3, max-content);
+  grid-template-columns: repeat(6, max-content);
   justify-content: center;
-  gap: 8px 24px;
+  gap: 8px 18px;
   margin: 0 auto 18px;
   font-size: 13px;
   font-weight: 600;
   color: #111827;
+  overflow-x: auto;
+  max-width: 100%;
 }
 .legend-item {
   display: inline-flex;
@@ -329,7 +331,7 @@ footer a:hover { text-decoration: underline; }
   .hero-authors { font-size: 12px; }
   .example-grid { grid-template-columns: 1fr; }
   .examples-title { font-size: 18px; }
-  .layer-legend { grid-template-columns: 1fr; justify-items: start; width: max-content; max-width: 100%; }
+  .layer-legend { justify-content: start; }
 }
 </style>
 </head>
