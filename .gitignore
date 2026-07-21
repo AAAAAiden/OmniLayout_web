@@ -1,1 +1,5 @@
 .codex_pydeps/
+
+# Local sample-data artifacts
+sample_data*/
+sample_data*.zip

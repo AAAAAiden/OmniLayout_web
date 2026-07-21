@@ -98,8 +98,8 @@ body {
 .pill-code:hover { box-shadow: 0 6px 20px rgba(99,102,241,.50); }
 .pill-data { background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 50%, #67e8f9 100%); color: #0e4e5a; box-shadow: 0 3px 12px rgba(6,182,212,.30); }
 .pill-data:hover { box-shadow: 0 6px 20px rgba(6,182,212,.48); }
-.pill-lb { background: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%); color: #064e3b; box-shadow: 0 3px 12px rgba(16,185,129,.30); }
-.pill-lb:hover { box-shadow: 0 6px 20px rgba(16,185,129,.48); }
+.pill-lb { background: #e5e7eb; color: #6b7280; box-shadow: none; cursor: not-allowed; opacity: 0.88; }
+.pill-lb:hover { box-shadow: none; transform: none; }
 .pill svg { width: 15px; height: 15px; flex-shrink: 0; }
 
 /* 鈹€鈹€ AUTHOR LINE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
@@ -364,6 +364,119 @@ footer a:hover { text-decoration: underline; }
   .example-grid { grid-template-columns: 1fr; }
   .examples-title { font-size: 18px; }
   .layer-legend { justify-content: start; }
+}
+
+/* ── DATA DOWNLOAD MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px 40px 32px;
+  max-width: 520px;
+  width: calc(100% - 48px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+  position: relative;
+  animation: modalIn .2s cubic-bezier(.34,1.4,.64,1);
+  text-align: left;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.93) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 20px;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background .12s, color .12s;
+}
+.modal-close:hover { background: #f3f4f6; color: #374151; }
+.modal-title { font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 6px; }
+.modal-sub { font-size: 13px; color: #6b7280; margin-bottom: 28px; }
+.modal-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+  margin-bottom: 12px;
+}
+.modal-dataset-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: box-shadow .15s, border-color .15s;
+}
+.modal-dataset-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,.07); border-color: #c9d1d9; }
+.modal-card-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.modal-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 60%, #67e8f9 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(6,182,212,.28);
+}
+.modal-card-icon svg { width: 20px; height: 20px; color: #0e4e5a; }
+.modal-card-icon.modal-card-icon-code {
+  background: linear-gradient(135deg, #6366f1 0%, #818cf8 60%, #a5b4fc 100%);
+  box-shadow: 0 3px 10px rgba(99,102,241,.28);
+}
+.modal-card-icon.modal-card-icon-code svg { color: #fff; }
+.modal-card-name { font-size: 14.5px; font-weight: 650; color: #111827; margin-bottom: 2px; }
+.modal-card-desc { font-size: 12px; color: #6b7280; }
+.modal-dl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 50%, #67e8f9 100%);
+  color: #0e4e5a;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 3px 10px rgba(6,182,212,.28);
+  transition: transform .15s cubic-bezier(.34,1.56,.64,1), box-shadow .15s;
+}
+.modal-dl-btn:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 6px 16px rgba(6,182,212,.42); }
+.modal-dl-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+.modal-dl-btn.modal-dl-btn-code {
+  background: linear-gradient(135deg, #6366f1 0%, #818cf8 50%, #a5b4fc 100%);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(99,102,241,.28);
+}
+.modal-dl-btn.modal-dl-btn-code:hover { box-shadow: 0 6px 16px rgba(99,102,241,.42); }
+
+@media (max-width: 560px) {
+  .modal-box { padding: 32px 22px 24px; }
+  .modal-dataset-card { align-items: flex-start; flex-direction: column; }
+  .modal-dl-btn { align-self: stretch; justify-content: center; }
 }
 </style>
 </head>
@@ -834,9 +947,9 @@ document.getElementById('app').innerHTML = `
     <div class="hero-note"><sup>*</sup> First authors (equal contribution). &nbsp; <sup>†</sup> Corresponding authors.</div>
     <div class="link-pills">
       <a class="pill pill-paper" href="#" target="_blank">${IC.arxiv} arXiv</a>
-      <a class="pill pill-code"  href="#" target="_blank">${IC.code} Code</a>
-      <a class="pill pill-data"  href="#" target="_blank">${IC.data} Data</a>
-      <a class="pill pill-lb"    href="#" target="_blank">${IC.lb} Huggingface</a>
+      <a class="pill pill-code" href="#" onclick="showCodeModal(event)">${IC.code} Code</a>
+      <a class="pill pill-data" href="#" onclick="showDataModal(event)">${IC.data} Data</a>
+      <a class="pill pill-lb"    href="#" aria-disabled="true" title="To be announced" onclick="event.preventDefault()">${IC.lb} Huggingface</a>
     </div>
   </div>
 </div>
@@ -1009,9 +1122,103 @@ function copyBib() {
     setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
   });
 }
+
+function showDataModal(event) {
+  event.preventDefault();
+  document.getElementById('dataModal').classList.add('open');
+}
+
+function closeDataModal() {
+  document.getElementById('dataModal').classList.remove('open');
+}
+
+function showCodeModal(event) {
+  event.preventDefault();
+  document.getElementById('codeModal').classList.add('open');
+}
+
+function closeCodeModal() {
+  document.getElementById('codeModal').classList.remove('open');
+}
+
+document.addEventListener('click', function(event) {
+  if (event.target === document.getElementById('dataModal')) closeDataModal();
+  if (event.target === document.getElementById('codeModal')) closeCodeModal();
+});
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closeDataModal();
+    closeCodeModal();
+  }
+});
 </script>
+
+<div class="modal-overlay" id="dataModal" role="dialog" aria-modal="true" aria-labelledby="dataModalTitle">
+  <div class="modal-box">
+    <button class="modal-close" type="button" aria-label="Close download dialog" onclick="closeDataModal()">&times;</button>
+    <div class="modal-title" id="dataModalTitle">OmniLayout Data</div>
+    <div class="modal-sub">Download the sample data from Google Drive.</div>
+    <div class="modal-section-label">Available Download</div>
+    <div class="modal-dataset-card">
+      <div class="modal-card-left">
+        <div class="modal-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="modal-card-name">Sample Data</div>
+          <div class="modal-card-desc">Google Drive</div>
+        </div>
+      </div>
+      <a class="modal-dl-btn" href="https://drive.google.com/file/d/1Lz6Cbjd4ea78fUHPVNIP4rX3yvrIahEs/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="codeModal" role="dialog" aria-modal="true" aria-labelledby="codeModalTitle">
+  <div class="modal-box">
+    <button class="modal-close" type="button" aria-label="Close code dialog" onclick="closeCodeModal()">&times;</button>
+    <div class="modal-title" id="codeModalTitle">OmniLayout Code</div>
+    <div class="modal-sub">Download the visualization code from Google Drive.</div>
+    <div class="modal-section-label">Available Download</div>
+    <div class="modal-dataset-card">
+      <div class="modal-card-left">
+        <div class="modal-card-icon modal-card-icon-code">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"/>
+            <polyline points="8 6 2 12 8 18"/>
+          </svg>
+        </div>
+        <div>
+          <div class="modal-card-name">Visualize Code</div>
+          <div class="modal-card-desc">Google Drive</div>
+        </div>
+      </div>
+      <a class="modal-dl-btn modal-dl-btn-code" href="https://drive.google.com/file/d/1B12M7Gutv7xn9l956G8caaWkmyMJ0Gb3/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download
+      </a>
+    </div>
+  </div>
+</div>
 </body>
 </html>
+
 
 
 
