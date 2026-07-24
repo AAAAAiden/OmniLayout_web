@@ -79,8 +79,9 @@
       </div>
 
       <div class="metric-legend">
-        <span><strong>NR</strong> net routability</span>
-        <span><strong>PR</strong> pad-pair routability</span>
+        <span><strong>NRR</strong> net routability rate (%)</span>
+        <span><strong>PRR</strong> pad-pair routability rate (%)</span>
+        <span><strong>PR</strong> pass rate</span>
         <span><strong>Open / PShort / NShort</strong> affected nets (%)</span>
         <span><strong>Total / Clr. / Dist.</strong> mean violations</span>
         <span><strong>Polygon</strong> outputs with a copper pour (%)</span>
@@ -91,10 +92,10 @@
       <div class="table-block">
         <h3 class="table-title">Table 1 - One-shot Evaluation of LMMs on PCB Routing</h3>
         <p class="table-caption">
-          <strong>Pass Rate</strong> is the fraction of expected inputs producing a loadable output.
-          <strong>NR</strong> measures required nets that are connected and free of published design-rule violations;
-          <strong>PR</strong> measures independent DRC-clean pad-to-pad connections. Missing outputs remain in the
-          denominators. Higher is better for NR, PR, and Pass Rate; lower is better for violations, length, vias, and runtime.
+          <strong>PR</strong> is the fraction of expected inputs producing a loadable output.
+          <strong>NRR</strong> is the percentage of required nets that are connected and free of published design-rule violations;
+          <strong>PRR</strong> is the percentage of required independent DRC-clean pad-to-pad connections. Missing outputs remain
+          in both routability denominators. Higher is better for PR, NRR, and PRR; lower is better for violations, length, and runtime.
         </p>
         <div class="table-toolbar">
           <span>Filter:</span>
@@ -118,11 +119,11 @@
                 <th colspan="2">Efficiency</th>
               </tr>
               <tr>
-                <th>NR</th><th>PR</th>
-                <th>Open<br>(%)</th><th>PShort<br>(%)</th><th>NShort<br>(%)</th>
-                <th>Total</th><th>Clr.</th><th>Dist.</th><th>Polygon<br>(%)</th>
-                <th>TWL</th><th>#Vias</th><th>#Layers</th>
-                <th>Pass<br>Rate</th><th>RT</th>
+                <th>NRR<br>(%) &uarr;</th><th>PRR<br>(%) &uarr;</th>
+                <th>Open<br>(%) &darr;</th><th>PShort<br>(%) &darr;</th><th>NShort<br>(%) &darr;</th>
+                <th>Total<br>&darr;</th><th>Clr.<br>&darr;</th><th>Dist.<br>&darr;</th><th>Polygon<br>(%)</th>
+                <th>TWL<br>&darr;</th><th>#Vias</th><th>#Layers</th>
+                <th>PR<br>&uarr;</th><th>RT<br>&darr;</th>
               </tr>
             </thead>
             <tbody id="oneShotBody"></tbody>
@@ -135,8 +136,8 @@
         <p class="table-caption">
           Each model is evaluated across <strong>No Tools</strong>, <strong>Visualization</strong>,
           <strong>Routing Score</strong>, <strong>Semantic Input</strong>, <strong>Prerouting/Remake</strong>,
-          and <strong>All Tools</strong>. Pass Rate uses 500 expected inputs. Avg. Steps is the mean number
-          of recorded agent iterations. Higher is better for NR, PR, and Pass Rate; lower is better otherwise.
+          and <strong>All Tools</strong>. PR uses 500 expected inputs. Avg. Steps is the mean number
+          of recorded agent iterations. Higher is better for PR, NRR, and PRR; lower is better for violations, length, and runtime.
         </p>
         <div class="table-toolbar">
           <span>Filter:</span>
@@ -160,11 +161,11 @@
                 <th colspan="3">Efficiency</th>
               </tr>
               <tr>
-                <th>NR</th><th>PR</th>
-                <th>Open<br>(%)</th><th>PShort<br>(%)</th><th>NShort<br>(%)</th>
-                <th>Total</th><th>Clr.</th><th>Dist.</th><th>Polygon<br>(%)</th>
-                <th>TWL</th><th>#Vias</th><th>#Layers</th>
-                <th>Pass<br>Rate</th><th>RT</th><th>Avg.<br>Steps</th>
+                <th>NRR<br>(%) &uarr;</th><th>PRR<br>(%) &uarr;</th>
+                <th>Open<br>(%) &darr;</th><th>PShort<br>(%) &darr;</th><th>NShort<br>(%) &darr;</th>
+                <th>Total<br>&darr;</th><th>Clr.<br>&darr;</th><th>Dist.<br>&darr;</th><th>Polygon<br>(%)</th>
+                <th>TWL<br>&darr;</th><th>#Vias</th><th>#Layers</th>
+                <th>PR<br>&uarr;</th><th>RT<br>&darr;</th><th>Avg.<br>Steps</th>
               </tr>
             </thead>
             <tbody id="agenticBody"></tbody>

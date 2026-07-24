@@ -1,0 +1,49 @@
+{
+  "exp0": {
+    "claude-opus-4-8": 10,
+    "gemini-2-5-flash-lite": 25,
+    "gpt-5-5": 25,
+    "gpt-5-mini": 25,
+    "llama-4-maverick": 8,
+    "ministral-14b": 9
+  },
+  "exp1": {
+    "claude-opus-4-8": 10,
+    "gemini-2-5-flash-lite": 25,
+    "gpt-5-5": 25,
+    "gpt-5-mini": 25,
+    "llama-4-maverick": 8,
+    "ministral-14b": 9
+  },
+  "exp2": {
+    "claude-opus-4-8": 10,
+    "gemini-2-5-flash-lite": 25,
+    "gpt-5-5": 25,
+    "gpt-5-mini": 25,
+    "llama-4-maverick": 10,
+    "ministral-14b": 10
+  },
+  "exp3": {
+    "claude-opus-4-8": 10,
+    "gemini-2-5-flash-lite": 1,
+    "gemini-3-1-pro-preview": 1,
+    "gpt-5-5": 25,
+    "gpt-5-mini": 25,
+    "llama-4-maverick": 1
+  },
+  "exp4": {
+    "claude-opus-4-8": 10,
+    "gemini-2-5-flash-lite": 1,
+    "gpt-5-5": 25,
+    "gpt-5-mini": 15,
+    "llama-4-maverick": 10,
+    "ministral-14b": 6
+  },
+  "exp5": {
+    "claude-opus-4-8": 10,
+    "gemini-2-5-flash-lite": 2,
+    "gpt-5-5": 25,
+    "gpt-5-mini": 25,
+    "llama-4-maverick": 10
+  }
+}
