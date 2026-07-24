@@ -47,24 +47,21 @@
     <section class="experiment-section" id="experiments">
       <div class="section-heading">
         <p class="section-kicker">Agentic evaluation</p>
-        <h2>Routing trajectories by experiment setup</h2>
+        <h2>Qualitative Routing Trajectories</h2>
         <p>
-          Select a setup to compare each model’s iterative routing process. Empty cards and
-          leaderboard cells indicate results that are not yet available.
+          Model-generated PCB routing trajectories under the No Tools setting, shown in a compact
+          responsive gallery for side-by-side comparison of path planning, connectivity, and
+          design-rule compliance.
         </p>
       </div>
 
-      <div class="setup-picker" id="setupPicker" role="tablist" aria-label="Experiment setup"></div>
-
-      <div class="setup-summary" aria-live="polite">
-        <div>
-          <span class="summary-label">Selected setup</span>
-          <strong id="selectedSetupName">No Tools</strong>
-        </div>
-        <p id="selectedSetupDescription"></p>
-        <span class="availability" id="availabilityCount"></span>
+      <div class="routing-legend" aria-label="Routing figure legend">
+        <span class="routing-legend-item"><span class="routing-legend-swatch routing-legend-board"></span>Board outline</span>
+        <span class="routing-legend-item"><span class="routing-legend-swatch routing-legend-th"></span>Through-hole pads</span>
+        <span class="routing-legend-item"><span class="routing-legend-swatch routing-legend-top"></span>Top-side pads / components</span>
+        <span class="routing-legend-item"><span class="routing-legend-swatch routing-legend-back"></span>Back-side pads / components</span>
+        <span class="routing-legend-item"><span class="routing-legend-swatch routing-legend-traces"></span>Routed traces</span>
       </div>
-
       <div class="model-grid" id="modelGrid" aria-live="polite"></div>
     </section>
 

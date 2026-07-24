@@ -44,53 +44,14 @@ const models = [
 ];
 
 const frameCounts = {
-  "exp0": {
+  exp0: {
     "claude-opus-4-8": 10,
     "gemini-2-5-flash-lite": 25,
     "gpt-5-5": 25,
     "gpt-5-mini": 25,
     "llama-4-maverick": 8,
-    "ministral-14b": 9
+    "ministral-14b": 9,
   },
-  "exp1": {
-    "claude-opus-4-8": 10,
-    "gemini-2-5-flash-lite": 25,
-    "gpt-5-5": 25,
-    "gpt-5-mini": 25,
-    "llama-4-maverick": 8,
-    "ministral-14b": 9
-  },
-  "exp2": {
-    "claude-opus-4-8": 10,
-    "gemini-2-5-flash-lite": 25,
-    "gpt-5-5": 25,
-    "gpt-5-mini": 25,
-    "llama-4-maverick": 10,
-    "ministral-14b": 10
-  },
-  "exp3": {
-    "claude-opus-4-8": 10,
-    "gemini-2-5-flash-lite": 1,
-    "gemini-3-1-pro-preview": 1,
-    "gpt-5-5": 25,
-    "gpt-5-mini": 25,
-    "llama-4-maverick": 1
-  },
-  "exp4": {
-    "claude-opus-4-8": 10,
-    "gemini-2-5-flash-lite": 1,
-    "gpt-5-5": 25,
-    "gpt-5-mini": 15,
-    "llama-4-maverick": 10,
-    "ministral-14b": 6
-  },
-  "exp5": {
-    "claude-opus-4-8": 10,
-    "gemini-2-5-flash-lite": 2,
-    "gpt-5-5": 25,
-    "gpt-5-mini": 25,
-    "llama-4-maverick": 10
-  }
 };
 
 const emptyRow = () => Array(15).fill(null);
@@ -164,50 +125,8 @@ const results = {
   },
 };
 
-let activeSetup = setups[0].id;
+const activeSetup = "exp0";
 
-function renderSetupPicker() {
-  const picker = document.getElementById("setupPicker");
-  picker.innerHTML = setups
-    .map(
-      (setup, index) => `
-        <button
-          class="setup-button${setup.id === activeSetup ? " active" : ""}"
-          id="tab-${setup.id}"
-          type="button"
-          role="tab"
-          aria-selected="${setup.id === activeSetup}"
-          aria-controls="modelGrid"
-          tabindex="${setup.id === activeSetup ? "0" : "-1"}"
-          data-setup="${setup.id}"
-        >${setup.label}</button>
-      `,
-    )
-    .join("");
-
-  picker.querySelectorAll(".setup-button").forEach((button, index, buttons) => {
-    button.addEventListener("click", () => selectSetup(button.dataset.setup));
-    button.addEventListener("keydown", (event) => {
-      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-      event.preventDefault();
-      let targetIndex = index;
-      if (event.key === "ArrowLeft") targetIndex = (index - 1 + buttons.length) % buttons.length;
-      if (event.key === "ArrowRight") targetIndex = (index + 1) % buttons.length;
-      if (event.key === "Home") targetIndex = 0;
-      if (event.key === "End") targetIndex = buttons.length - 1;
-      buttons[targetIndex].focus();
-      selectSetup(buttons[targetIndex].dataset.setup);
-    });
-  });
-}
-
-function renderSummary() {
-  const setup = setups.find((item) => item.id === activeSetup);
-  const available = Object.keys(frameCounts[activeSetup] || {}).length;
-  document.getElementById("selectedSetupName").textContent = setup.label;
-  document.getElementById("selectedSetupDescription").textContent = setup.description;
-  document.getElementById("availabilityCount").textContent = `${available} of ${models.length} GIFs available`;
-}
 
 function renderModelGrid() {
   const grid = document.getElementById("modelGrid");
@@ -216,7 +135,8 @@ function renderModelGrid() {
     .map((model) => {
       const count = counts[model.id];
       const trajectory = count
-        ? `<img src="gifs/${activeSetup}--${model.id}.gif?v=healthypi-v1-1" alt="${model.label} routing iterations for ${setups.find((item) => item.id === activeSetup).label}" loading="lazy">`
+        ? `<div class="trajectory-loading" aria-hidden="true">Loading synchronized animation...</div>
+           <img data-gif-src="gifs/${activeSetup}--${model.id}.gif?v=no-tools-vertical" alt="${model.label} No Tools routing iterations" hidden>`
         : `<div class="trajectory-empty" aria-label="Result pending">Result pending</div>`;
       const status = count
         ? `<span class="status-ready">Available</span><span>${count} iteration${count === 1 ? "" : "s"}</span>`
@@ -235,13 +155,30 @@ function renderModelGrid() {
     .join("");
 }
 
-function selectSetup(setupId) {
-  activeSetup = setupId;
-  renderSetupPicker();
-  renderSummary();
-  renderModelGrid();
+async function synchronizeGifs() {
+  const images = [...document.querySelectorAll("img[data-gif-src]")];
+  const loaded = await Promise.all(
+    images.map((image) => new Promise((resolve) => {
+      const preload = new Image();
+      preload.onload = () => resolve({ image, source: image.dataset.gifSrc, ok: true });
+      preload.onerror = () => resolve({ image, source: image.dataset.gifSrc, ok: false });
+      preload.src = image.dataset.gifSrc;
+    })),
+  );
+
+  requestAnimationFrame(() => {
+    loaded.forEach(({ image, source, ok }) => {
+      const loading = image.previousElementSibling;
+      if (!ok) {
+        loading.textContent = "Animation unavailable";
+        return;
+      }
+      image.src = source;
+      image.hidden = false;
+      loading.remove();
+    });
+  });
 }
 
-renderSetupPicker();
-renderSummary();
 renderModelGrid();
+synchronizeGifs();
