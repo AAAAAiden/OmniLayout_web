@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OmniRouting benchmark: model routing trajectories and agentic PCB routing leaderboard.">
+  <meta property="og:title" content="OmniRouting Benchmark">
+  <meta property="og:description" content="A semantic-coupled multimodal benchmark for constraint-aware spatial reasoning in PCB routing.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.omnieda.com/routing/">
+  <meta property="og:image" content="https://www.omnieda.com/routing/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>OmniRouting Benchmark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Benchmark navigation">
+    <a class="brand" href="../">Omni<span>EDA</span></a>
+    <div class="site-tabs">
+      <a href="../">OmniLayout</a>
+      <a class="active" href="./" aria-current="page">OmniRouting</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-glow hero-glow-one"></div>
+    <div class="hero-glow hero-glow-two"></div>
+    <div class="hero-inner">
+      <p class="eyebrow">PCB routing reasoning benchmark</p>
+      <h1>OmniRouting: A Semantic-Coupled Multimodal Benchmark for <em>Constraint-Aware Spatial Reasoning in PCB Routing</em></h1>
+      <p class="submission">Anonymous submission · Under review</p>
+      <p class="hero-copy">
+        1,681 industrial-grade, schematic-coupled PCB designs for evaluating connectivity,
+        design-rule compliance, electrical functionality, and tool-augmented agentic routing.
+      </p>
+      <div class="hero-actions">
+        <a class="pill pill-paper" href="OmniRouting.pdf" target="_blank" rel="noopener">Paper PDF</a>
+        <a class="pill pill-results" href="#experiments">Explore results</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="experiment-section" id="experiments">
+      <div class="section-heading">
+        <p class="section-kicker">Agentic evaluation</p>
+        <h2>Routing trajectories by experiment setup</h2>
+        <p>
+          Select a setup to compare each model’s iterative routing process. Empty cards and
+          leaderboard cells indicate results that are not yet available.
+        </p>
+      </div>
+
+      <div class="setup-picker" id="setupPicker" role="tablist" aria-label="Experiment setup"></div>
+
+      <div class="setup-summary" aria-live="polite">
+        <div>
+          <span class="summary-label">Selected setup</span>
+          <strong id="selectedSetupName">No Tools</strong>
+        </div>
+        <p id="selectedSetupDescription"></p>
+        <span class="availability" id="availabilityCount"></span>
+      </div>
+
+      <div class="model-grid" id="modelGrid" aria-live="polite"></div>
+    </section>
+
+    <section class="leaderboard-section" id="leaderboard">
+      <div class="section-heading">
+        <p class="section-kicker">Paper results</p>
+        <h2>OmniRouting leaderboards</h2>
+        <p>
+          Complete one-shot and agentic routing results from the current manuscript. Unavailable
+          results are preserved as dashes, matching the paper.
+        </p>
+      </div>
+
+      <div class="metric-legend">
+        <span><strong>NR</strong> net routability</span>
+        <span><strong>PR</strong> pad-pair routability</span>
+        <span><strong>Open / PShort / NShort</strong> affected nets (%)</span>
+        <span><strong>Total / Clr. / Dist.</strong> mean violations</span>
+        <span><strong>Polygon</strong> outputs with a copper pour (%)</span>
+        <span><strong>TWL</strong> routed-wire centerline length</span>
+        <span><strong>RT</strong> runtime (s)</span>
+      </div>
+
+      <div class="table-block">
+        <h3 class="table-title">Table 1 - One-shot Evaluation of LMMs on PCB Routing</h3>
+        <p class="table-caption">
+          <strong>Pass Rate</strong> is the fraction of expected inputs producing a loadable output.
+          <strong>NR</strong> measures required nets that are connected and free of published design-rule violations;
+          <strong>PR</strong> measures independent DRC-clean pad-to-pad connections. Missing outputs remain in the
+          denominators. Higher is better for NR, PR, and Pass Rate; lower is better for violations, length, vias, and runtime.
+        </p>
+        <div class="table-toolbar">
+          <span>Filter:</span>
+          <div class="leader-filter" data-table="one-shot" aria-label="Filter Table 1 models">
+            <button class="filter-button active" type="button" data-filter="all">All</button>
+            <button class="filter-button" type="button" data-filter="commercial">Commercial</button>
+            <button class="filter-button" type="button" data-filter="open">Open source</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="result-table" aria-label="One-shot evaluation of LMMs on PCB routing">
+            <thead>
+              <tr>
+                <th rowspan="2" class="model-col">Model</th>
+                <th rowspan="2">Size</th>
+                <th rowspan="2">Experiment</th>
+                <th colspan="2">Routability</th>
+                <th colspan="3">Connectivity</th>
+                <th colspan="4">Design Rules</th>
+                <th colspan="3">Routing Quality</th>
+                <th colspan="2">Efficiency</th>
+              </tr>
+              <tr>
+                <th>NR</th><th>PR</th>
+                <th>Open<br>(%)</th><th>PShort<br>(%)</th><th>NShort<br>(%)</th>
+                <th>Total</th><th>Clr.</th><th>Dist.</th><th>Polygon<br>(%)</th>
+                <th>TWL</th><th>#Vias</th><th>#Layers</th>
+                <th>Pass<br>Rate</th><th>RT</th>
+              </tr>
+            </thead>
+            <tbody id="oneShotBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="table-block">
+        <h3 class="table-title">Table 2 - Agentic Evaluation of LMMs on PCB Routing</h3>
+        <p class="table-caption">
+          Each model is evaluated across <strong>No Tools</strong>, <strong>Visualization</strong>,
+          <strong>Routing Score</strong>, <strong>Semantic Input</strong>, <strong>Prerouting/Remake</strong>,
+          and <strong>All Tools</strong>. Pass Rate uses 500 expected inputs. Avg. Steps is the mean number
+          of recorded agent iterations. Higher is better for NR, PR, and Pass Rate; lower is better otherwise.
+        </p>
+        <div class="table-toolbar">
+          <span>Filter:</span>
+          <div class="leader-filter" data-table="agentic" aria-label="Filter Table 2 models">
+            <button class="filter-button active" type="button" data-filter="all">All</button>
+            <button class="filter-button" type="button" data-filter="commercial">Commercial</button>
+            <button class="filter-button" type="button" data-filter="open">Open source</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="result-table" aria-label="Agentic evaluation of LMMs on PCB routing">
+            <thead>
+              <tr>
+                <th rowspan="2" class="model-col">Model</th>
+                <th rowspan="2">Size</th>
+                <th rowspan="2">Agent Configuration</th>
+                <th colspan="2">Routability</th>
+                <th colspan="3">Connectivity</th>
+                <th colspan="4">Design Rules</th>
+                <th colspan="3">Routing Quality</th>
+                <th colspan="3">Efficiency</th>
+              </tr>
+              <tr>
+                <th>NR</th><th>PR</th>
+                <th>Open<br>(%)</th><th>PShort<br>(%)</th><th>NShort<br>(%)</th>
+                <th>Total</th><th>Clr.</th><th>Dist.</th><th>Polygon<br>(%)</th>
+                <th>TWL</th><th>#Vias</th><th>#Layers</th>
+                <th>Pass<br>Rate</th><th>RT</th><th>Avg.<br>Steps</th>
+              </tr>
+            </thead>
+            <tbody id="agenticBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="table-note">
+        Open, physical-short, and logical-short percentages count each affected net once. Polygon is not a violation.
+        A dash indicates an unavailable result in the manuscript.
+      </p>
+    </section>
+
+    <section class="paper-section" id="paper">
+      <div class="paper-card">
+        <div class="paper-heading">
+          <p class="section-kicker">About the benchmark</p>
+          <h2>From geometric paths to electrically valid boards</h2>
+        </div>
+        <figure class="paper-figure">
+          <img
+            src="figures/figure2.png"
+            alt="Overview of the OmniRouting benchmark with representative PCB routing cases"
+            loading="lazy"
+          >
+          <figcaption>
+            <strong>Figure 2.</strong> Overview of the OmniRouting benchmark with representative cases.
+          </figcaption>
+        </figure>
+        <p class="abstract">
+          Recent large language models have made progress in constraint-aware navigation and
+          spatial reasoning, but reliable PCB routing additionally demands strict geometric,
+          topological, electrical, and manufacturing constraints. OmniRouting introduces the
+          first large-scale benchmark for this setting, pairing real-world board designs with
+          engineer-verified reference routings and structured evaluation protocols. Current
+          models continue to show weak path planning, poor design-rule adherence, and inconsistent
+          preservation of electrical functionality.
+        </p>
+
+        <div class="stat-grid" aria-label="Benchmark statistics">
+          <div><strong>1,681</strong><span>PCB designs</span></div>
+          <div><strong>2–8</strong><span>routing layers</span></div>
+          <div><strong>109.9K</strong><span>components</span></div>
+          <div><strong>245.4K</strong><span>pads and SMDs</span></div>
+          <div><strong>219.8K</strong><span>annotated nets</span></div>
+        </div>
+
+        <div class="task-grid">
+          <article>
+            <span>01</span>
+            <h3>Topological path planning</h3>
+            <p>Construct complete routing topologies that connect circuit nets.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Design-rule reasoning</h3>
+            <p>Respect clearance, trace-width, via, obstacle, and boundary constraints.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Electrical functionality</h3>
+            <p>Preserve schematic intent and reference routing behavior.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Agentic tool use</h3>
+            <p>Iteratively refine routes with visualization, scoring, and semantic feedback.</p>
+          </article>
+        </div>
+
+        <a class="paper-link" href="OmniRouting.pdf" target="_blank" rel="noopener">Read the current manuscript</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>OmniRouting Benchmark · 2026</span>
+    <a href="../">Return to OmniLayout</a>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="tables.js"></script>
+</body>
+</html>
