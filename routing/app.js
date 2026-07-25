@@ -46,11 +46,12 @@ const models = [
 const frameCounts = {
   exp0: {
     "claude-opus-4-8": 10,
-    "gemini-2-5-flash-lite": 25,
-    "gpt-5-5": 25,
-    "gpt-5-mini": 25,
-    "llama-4-maverick": 8,
-    "ministral-14b": 9,
+    "gemini-3-1-pro-preview": 3,
+    "gpt-5-5": 11,
+    "gpt-5-mini": 17,
+    "llama-4-maverick": 10,
+    "ministral-14b": 8,
+    "qwen3-5-9b": 14,
   },
 };
 
@@ -126,33 +127,59 @@ const results = {
 };
 
 const activeSetup = "exp0";
+const galleryModelIds = [
+  "gpt-5-5",
+  "gpt-5-mini",
+  "claude-opus-4-8",
+  "gemini-3-1-pro-preview",
+  "llama-4-maverick",
+  "ministral-14b",
+  "qwen3-5-9b",
+];
 
 
 function renderModelGrid() {
   const grid = document.getElementById("modelGrid");
   const counts = frameCounts[activeSetup] || {};
-  grid.innerHTML = models
+  const galleryModels = galleryModelIds
+    .map((id) => models.find((model) => model.id === id))
+    .filter(Boolean);
+  const groundTruthCard = `
+    <article class="model-card model-card-reference">
+      <div class="model-card-header">
+        <h3>Human Engineer Reference Design</h3>
+        <span class="model-tag">Ground truth</span>
+      </div>
+      <div class="trajectory">
+        <img src="gifs/ground-truth.png?v=adafruit-drv8833" alt="Ground-truth Adafruit DRV8833 PCB routing with top and bottom layers shown vertically">
+      </div>
+      <div class="model-card-footer">
+        <span class="status-ready">Reference</span><span>Top and bottom layers</span>
+      </div>
+    </article>
+  `;
+  const modelCards = galleryModels
     .map((model) => {
       const count = counts[model.id];
-      const trajectory = count
-        ? `<div class="trajectory-loading" aria-hidden="true">Loading synchronized animation...</div>
-           <img data-gif-src="gifs/${activeSetup}--${model.id}.gif?v=no-tools-vertical" alt="${model.label} No Tools routing iterations" hidden>`
-        : `<div class="trajectory-empty" aria-label="Result pending">Result pending</div>`;
-      const status = count
-        ? `<span class="status-ready">Available</span><span>${count} iteration${count === 1 ? "" : "s"}</span>`
-        : `<span class="status-pending">Pending</span><span>&nbsp;</span>`;
+      if (!count) return "";
       return `
         <article class="model-card">
           <div class="model-card-header">
             <h3>${model.label}</h3>
             <span class="model-tag">${model.type}</span>
           </div>
-          <div class="trajectory">${trajectory}</div>
-          <div class="model-card-footer">${status}</div>
+          <div class="trajectory">
+            <div class="trajectory-loading" aria-hidden="true">Loading synchronized animation...</div>
+            <img data-gif-src="gifs/${activeSetup}--${model.id}.gif?v=adafruit-drv8833" alt="${model.label} No Tools routing iterations" hidden>
+          </div>
+          <div class="model-card-footer">
+            <span class="status-ready">Available</span><span>${count} iteration${count === 1 ? "" : "s"}</span>
+          </div>
         </article>
       `;
     })
     .join("");
+  grid.innerHTML = groundTruthCard + modelCards;
 }
 
 async function synchronizeGifs() {

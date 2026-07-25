@@ -17,6 +17,49 @@ body {
 }
 
 /* 鈹€鈹€ CENTERED WRAPPER 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 58px;
+  padding: 0 5vw;
+  color: #eef0ff;
+  background: rgba(15, 12, 41, 0.96);
+  border-bottom: 1px solid rgba(165, 180, 252, 0.16);
+  backdrop-filter: blur(16px);
+}
+.site-brand {
+  color: #f3f4ff;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.site-brand span { color: #a5b4fc; }
+.site-tabs { display: flex; align-items: center; gap: 6px; }
+.site-tabs a {
+  padding: 7px 13px;
+  border-radius: 999px;
+  color: #c7c7e8;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color .16s ease, background .16s ease;
+}
+.site-tabs a:hover { color: #fff; }
+.site-tabs a.active {
+  color: #fff;
+  background: rgba(165, 180, 252, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(165, 180, 252, 0.22);
+}
+@media (max-width: 620px) {
+  .site-nav { padding: 0 14px; }
+  .site-tabs a { padding: 6px 9px; font-size: 12px; }
+}
+
 .container {
   width: 88%;
   max-width: 1400px;
@@ -928,6 +971,14 @@ const BIB_HTML = `<span class="bib-key">@article</span>{lu2026omnilayout,
 // RENDER
 // 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 document.getElementById('app').innerHTML = `
+
+<nav class="site-nav" aria-label="Benchmark navigation">
+  <a class="site-brand" href="./">Omni<span>EDA</span></a>
+  <div class="site-tabs">
+    <a class="active" href="./" aria-current="page">OmniLayout</a>
+    <a href="routing/">OmniRouting</a>
+  </div>
+</nav>
 
 <div class="hero">
   <div class="hero-inner">
