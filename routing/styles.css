@@ -178,20 +178,31 @@ a {
 }
 
 .pill {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 7px;
   min-height: 42px;
   padding: 10px 20px;
+  overflow: hidden;
+  border: 0;
   border-radius: 999px;
+  font-family: inherit;
   font-size: 13.5px;
   font-weight: 650;
   text-decoration: none;
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
-.pill:hover {
+.pill:not(.pill-disabled):hover {
   transform: translateY(-2px);
+}
+
+.pill svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
 }
 
 .pill-paper {
@@ -200,10 +211,13 @@ a {
   box-shadow: 0 7px 24px rgba(249, 115, 22, 0.26);
 }
 
-.pill-results {
-  color: #fff;
-  background: linear-gradient(135deg, #6366f1, #8b8cf7);
-  box-shadow: 0 7px 24px rgba(99, 102, 241, 0.28);
+.pill-disabled {
+  color: #6b7280;
+  background: #e5e7eb;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.88;
+  user-select: none;
 }
 
 section {
