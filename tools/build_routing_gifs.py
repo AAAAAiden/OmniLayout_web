@@ -45,7 +45,11 @@ def parse_args() -> argparse.Namespace:
         help="Static hold after the shared final iteration (default: 10000 ms).",
     )
     parser.add_argument("--max-width", type=int, default=1080)
-    parser.add_argument("--no-iteration-label", action="store_true")
+    parser.add_argument(
+        "--iteration-label",
+        action="store_true",
+        help="Draw the iteration number inside each GIF frame.",
+    )
     parser.add_argument(
         "--clean",
         action="store_true",
@@ -77,11 +81,19 @@ def collect_side_frames(side_dir: Path) -> dict[int, Path]:
 
 def collect_jobs(input_dir: Path) -> list[tuple[str, str, list[tuple[int, Path, Path]]]]:
     jobs: list[tuple[str, str, list[tuple[int, Path, Path]]]] = []
-    for model_dir in sorted(path for path in input_dir.iterdir() if path.is_dir()):
+    model_root = input_dir / "models"
+    if not model_root.is_dir():
+        model_root = input_dir
+
+    for model_dir in sorted(path for path in model_root.iterdir() if path.is_dir()):
         model_slug = slugify(model_dir.name)
         for top_dir in sorted(path for path in model_dir.rglob("top") if path.is_dir()):
             bottom_dir = top_dir.parent / "bottom"
-            setup = setup_id(top_dir.parent.name)
+            setup = None
+            for ancestor in top_dir.parents:
+                setup = setup_id(ancestor.name)
+                if setup is not None or ancestor == model_dir:
+                    break
             if setup != "exp0" or not bottom_dir.is_dir():
                 continue
             top_frames = collect_side_frames(top_dir)
@@ -152,13 +164,23 @@ def prepare_frame(
 
 
 def write_ground_truth(input_dir: Path, output_dir: Path, max_width: int) -> Path:
-    top_path = input_dir / "ground_truth" / "top" / "ground_truth.png"
-    bottom_path = input_dir / "ground_truth" / "bottom" / "ground_truth.png"
-    if not top_path.is_file() or not bottom_path.is_file():
-        raise FileNotFoundError(
-            "Expected ground-truth images at "
-            f"{top_path.relative_to(input_dir)} and {bottom_path.relative_to(input_dir)}"
-        )
+    ground_truth_paths: list[Path] = []
+    for side in ("top", "bottom"):
+        side_dir = input_dir / "ground_truth" / side
+        preferred_path = side_dir / "ground_truth.png"
+        if preferred_path.is_file():
+            ground_truth_paths.append(preferred_path)
+            continue
+
+        candidates = sorted(side_dir.glob("*.png"))
+        if len(candidates) != 1:
+            raise FileNotFoundError(
+                f"Expected exactly one ground-truth PNG in {side_dir.relative_to(input_dir)}; "
+                f"found {len(candidates)}"
+            )
+        ground_truth_paths.append(candidates[0])
+
+    top_path, bottom_path = ground_truth_paths
 
     ground_truth = compose_sides(top_path, bottom_path)
     if max_width > 0 and ground_truth.width > max_width:
@@ -205,7 +227,7 @@ def main() -> None:
     shared_iterations = max(len(frame_paths) for _, _, frame_paths in jobs)
     for index, (setup, model, frame_paths) in enumerate(jobs, start=1):
         images = [
-            prepare_frame(top, bottom, iteration, args.max_width, not args.no_iteration_label)
+            prepare_frame(top, bottom, iteration, args.max_width, args.iteration_label)
             for iteration, top, bottom in frame_paths
         ]
         durations = [args.frame_ms] * len(images)
