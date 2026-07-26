@@ -23,7 +23,9 @@ FRAME_RE = re.compile(r"^iter_(?P<iteration>\d+)_current\.png$", re.IGNORECASE)
 STEP_METRIC_RE = re.compile(
     r"^step\s+(?P<iteration>\d+)\s+"
     r"Net RR=\s*(?P<net_rr>\d+(?:\.\d+)?)%.*?"
-    r"Pin RR=\s*(?P<pin_rr>\d+(?:\.\d+)?)%"
+    r"Pin RR=\s*(?P<pin_rr>\d+(?:\.\d+)?)%.*?"
+    r"Open=\s*(?P<open_count>\d+).*?"
+    r"NShort=\s*(?P<short_count>\d+)"
 )
 SETUP_IDS = {
     "agent_no_tools": "exp0",
@@ -119,7 +121,9 @@ def collect_jobs(input_dir: Path) -> list[tuple[str, str, list[tuple[int, Path, 
     return jobs
 
 
-def load_step_metrics(input_dir: Path) -> dict[tuple[str, int], tuple[float, float]]:
+def load_step_metrics(
+    input_dir: Path,
+) -> dict[tuple[str, int], tuple[float, float, int, int]]:
     manifest_path = input_dir / "render_manifest.json"
     if not manifest_path.is_file():
         raise FileNotFoundError(f"Missing render manifest: {manifest_path}")
@@ -128,7 +132,7 @@ def load_step_metrics(input_dir: Path) -> dict[tuple[str, int], tuple[float, flo
     run_root = Path(manifest["run_root"])
     board = str(manifest["board"])
     model_root = input_dir / "models"
-    metrics: dict[tuple[str, int], tuple[float, float]] = {}
+    metrics: dict[tuple[str, int], tuple[float, float, int, int]] = {}
 
     for model_dir in sorted(path for path in model_root.iterdir() if path.is_dir()):
         model_slug = slugify(model_dir.name)
@@ -148,6 +152,8 @@ def load_step_metrics(input_dir: Path) -> dict[tuple[str, int], tuple[float, flo
             metrics[(model_slug, int(match.group("iteration")))] = (
                 float(match.group("net_rr")),
                 float(match.group("pin_rr")),
+                int(match.group("open_count")),
+                int(match.group("short_count")),
             )
 
     return metrics
@@ -218,11 +224,17 @@ def load_metadata_font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFon
 
 def draw_metadata_bar(frame: Image.Image, label: str) -> None:
     draw = ImageDraw.Draw(frame)
-    font = load_metadata_font(size=34)
-    box = draw.textbbox((0, 0), label, font=font)
     margin = 16
     padding_x = 17
     padding_y = 11
+    font_size = 34
+    max_label_width = frame.width - 2 * margin - 2 * padding_x
+    while True:
+        font = load_metadata_font(size=font_size)
+        box = draw.textbbox((0, 0), label, font=font)
+        if box[2] - box[0] <= max_label_width or font_size <= 24:
+            break
+        font_size -= 1
     label_width = box[2] - box[0]
     label_height = box[3] - box[1]
     background = (
@@ -234,14 +246,12 @@ def draw_metadata_bar(frame: Image.Image, label: str) -> None:
     draw.rounded_rectangle(
         background,
         radius=11,
-        fill=(24, 30, 48),
-        outline=(65, 76, 105),
-        width=1,
+        fill=(255, 255, 255),
     )
     draw.text(
         (margin + padding_x - box[0], margin + padding_y - box[1]),
         label,
-        fill=(248, 250, 252),
+        fill=(0, 0, 0),
         font=font,
     )
 
@@ -252,6 +262,8 @@ def prepare_frame(
     iteration: int,
     net_rr: float,
     pin_rr: float,
+    open_count: int,
+    short_count: int,
     max_width: int,
     show_frame_metadata: bool,
 ) -> Image.Image:
@@ -264,7 +276,9 @@ def prepare_frame(
         label = (
             f"Iteration {iteration}   \u2022   "
             f"Net RR {net_rr:.2f}%   \u2022   "
-            f"Pin RR {pin_rr:.2f}%"
+            f"Pin RR {pin_rr:.2f}%   \u2022   "
+            f"Open {open_count}   \u2022   "
+            f"Short {short_count}"
         )
         draw_metadata_bar(frame, label)
     else:
@@ -303,7 +317,10 @@ def write_ground_truth(input_dir: Path, output_dir: Path, max_width: int) -> Pat
             Image.Resampling.LANCZOS,
         )
 
-    draw_metadata_bar(ground_truth, "Net RR 100%   \u2022   Pin RR 100%")
+    draw_metadata_bar(
+        ground_truth,
+        "Net RR 100%   \u2022   Pin RR 100%   \u2022   Open 0   \u2022   Short 0",
+    )
 
     output_path = output_dir / GROUND_TRUTH_FILENAME
     ground_truth.save(output_path, optimize=True)
@@ -331,7 +348,8 @@ def main() -> None:
     ]
     if missing_metrics:
         raise SystemExit(
-            "Missing Net RR / Pin RR metrics for: " + ", ".join(missing_metrics)
+            "Missing Net RR / Pin RR / Open / Short metrics for: "
+            + ", ".join(missing_metrics)
         )
 
     output_dir.mkdir(parents=True, exist_ok=True)

@@ -153,7 +153,7 @@ function renderModelGrid() {
         <span class="model-tag">Ground truth</span>
       </div>
       <div class="trajectory">
-        <img src="gifs/ground-truth.png?v=adafruit-bluefruit-uart-v9" alt="Ground-truth Adafruit Bluefruit LE UART Friend PCB routing with top and bottom layers shown vertically">
+        <img src="gifs/ground-truth.png?v=adafruit-bluefruit-uart-v12" alt="Ground-truth Adafruit Bluefruit LE UART Friend PCB routing with top and bottom layers shown vertically">
       </div>
       <div class="model-card-footer">
         <span class="status-ready">Reference</span><span>Top and bottom layers</span>
@@ -172,7 +172,7 @@ function renderModelGrid() {
           </div>
           <div class="trajectory">
             <div class="trajectory-loading" aria-hidden="true">Loading synchronized animation...</div>
-            <img data-gif-src="gifs/${activeSetup}--${model.id}.gif?v=adafruit-bluefruit-uart-v9" alt="${model.label} No Tools routing iterations with Net RR and Pin RR metrics" hidden>
+            <img data-gif-src="gifs/${activeSetup}--${model.id}.gif?v=adafruit-bluefruit-uart-v12" alt="${model.label} No Tools routing iterations with Net RR, Pin RR, Open, and Short metrics baked into each frame" hidden>
           </div>
           <div class="model-card-footer">
             <span class="status-ready">Available</span>
@@ -183,6 +183,10 @@ function renderModelGrid() {
     .join("");
   grid.innerHTML = groundTruthCard + modelCards;
 }
+
+const ROUTING_GIF_LOOP_MS = 30_000;
+let routingGifLoopId = 0;
+let routingGifRestartTimer = null;
 
 async function synchronizeGifs() {
   const images = [...document.querySelectorAll("img[data-gif-src]")];
@@ -195,18 +199,33 @@ async function synchronizeGifs() {
     })),
   );
 
-  requestAnimationFrame(() => {
-    loaded.forEach(({ image, source, ok }) => {
-      const loading = image.previousElementSibling;
-      if (!ok) {
-        loading.textContent = "Animation unavailable";
-        return;
-      }
-      image.src = source;
-      image.hidden = false;
-      loading.remove();
-    });
+  const ready = [];
+  loaded.forEach(({ image, source, ok }) => {
+    const loading = image.previousElementSibling;
+    if (!ok) {
+      loading.textContent = "Animation unavailable";
+      return;
+    }
+    ready.push({ image, source, loading });
   });
+
+  function restartGifs() {
+    const syncId = `${Date.now()}-${routingGifLoopId + 1}`;
+    routingGifLoopId += 1;
+
+    requestAnimationFrame(() => {
+      ready.forEach(({ image, source, loading }) => {
+        image.src = `${source}#sync-${syncId}`;
+        image.hidden = false;
+        if (loading.isConnected) loading.remove();
+      });
+    });
+
+    window.clearTimeout(routingGifRestartTimer);
+    routingGifRestartTimer = window.setTimeout(restartGifs, ROUTING_GIF_LOOP_MS);
+  }
+
+  restartGifs();
 }
 
 renderModelGrid();
