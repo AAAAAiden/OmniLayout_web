@@ -153,7 +153,7 @@ function renderModelGrid() {
         <span class="model-tag">Ground truth</span>
       </div>
       <div class="trajectory">
-        <img src="gifs/ground-truth.png?v=adafruit-bluefruit-uart-v13" alt="Ground-truth Adafruit Bluefruit LE UART Friend PCB routing with top and bottom layers shown vertically">
+        <img src="gifs/ground-truth.png?v=adafruit-bluefruit-uart-v14" alt="Ground-truth Adafruit Bluefruit LE UART Friend PCB routing with top and bottom layers shown vertically">
       </div>
       <div class="model-card-footer">
         <span class="status-ready">Reference</span><span>Top and bottom layers</span>
@@ -172,7 +172,7 @@ function renderModelGrid() {
           </div>
           <div class="trajectory">
             <div class="trajectory-loading" aria-hidden="true">Loading synchronized animation...</div>
-            <img data-gif-src="gifs/${activeSetup}--${model.id}.gif?v=adafruit-bluefruit-uart-v13" alt="${model.label} No Tools routing iterations with Net RR and Pin RR metrics baked into each frame" hidden>
+            <img data-gif-src="gifs/${activeSetup}--${model.id}.gif?v=adafruit-bluefruit-uart-v14" alt="${model.label} No Tools routing iterations with Net RR and Pin RR metrics baked into each frame" hidden>
           </div>
           <div class="model-card-footer">
             <span class="status-ready">Available</span>

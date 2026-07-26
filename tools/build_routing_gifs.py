@@ -183,7 +183,15 @@ def open_on_white(path: Path, clean_bottom_left_text: bool = False) -> Image.Ima
     image = canvas.convert("RGB")
     if clean_bottom_left_text:
         remove_bottom_left_text(image)
-    return image
+
+    width, height = image.size
+    crop_box = (
+        round(width * 0.13),
+        round(height * 0.08),
+        round(width * 0.87),
+        round(height * 0.90),
+    )
+    return image.crop(crop_box)
 
 
 def compose_sides(
@@ -193,7 +201,7 @@ def compose_sides(
 ) -> Image.Image:
     top = open_on_white(top_path, clean_bottom_left_text)
     bottom = open_on_white(bottom_path, clean_bottom_left_text)
-    gap = 24
+    gap = 12
     width = max(top.width, bottom.width)
     composite = Image.new("RGB", (width, top.height + gap + bottom.height), "white")
     composite.paste(top, ((width - top.width) // 2, 0))
