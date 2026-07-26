@@ -20,6 +20,11 @@ DEFAULT_INPUT_DIR = (
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "routing" / "gifs"
 GROUND_TRUTH_FILENAME = "ground-truth.png"
 FRAME_RE = re.compile(r"^iter_(?P<iteration>\d+)_current\.png$", re.IGNORECASE)
+STEP_METRIC_RE = re.compile(
+    r"^step\s+(?P<iteration>\d+)\s+"
+    r"Net RR=\s*(?P<net_rr>\d+(?:\.\d+)?)%.*?"
+    r"Pin RR=\s*(?P<pin_rr>\d+(?:\.\d+)?)%"
+)
 SETUP_IDS = {
     "agent_no_tools": "exp0",
     "agent_score_only": "exp1",
@@ -46,9 +51,9 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--max-width", type=int, default=1080)
     parser.add_argument(
-        "--no-iteration-label",
+        "--no-frame-metadata",
         action="store_true",
-        help="Do not draw the iteration number inside each GIF frame.",
+        help="Do not draw iteration and routability metrics inside each GIF frame.",
     )
     parser.add_argument(
         "--clean",
@@ -114,6 +119,40 @@ def collect_jobs(input_dir: Path) -> list[tuple[str, str, list[tuple[int, Path, 
     return jobs
 
 
+def load_step_metrics(input_dir: Path) -> dict[tuple[str, int], tuple[float, float]]:
+    manifest_path = input_dir / "render_manifest.json"
+    if not manifest_path.is_file():
+        raise FileNotFoundError(f"Missing render manifest: {manifest_path}")
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    run_root = Path(manifest["run_root"])
+    board = str(manifest["board"])
+    model_root = input_dir / "models"
+    metrics: dict[tuple[str, int], tuple[float, float]] = {}
+
+    for model_dir in sorted(path for path in model_root.iterdir() if path.is_dir()):
+        model_slug = slugify(model_dir.name)
+        report_path = (
+            run_root
+            / model_dir.name
+            / "agent_no_tools"
+            / f"{board}_rr_pr_by_step.txt"
+        )
+        if not report_path.is_file():
+            continue
+
+        for line in report_path.read_text(encoding="utf-8-sig").splitlines():
+            match = STEP_METRIC_RE.match(line)
+            if not match:
+                continue
+            metrics[(model_slug, int(match.group("iteration")))] = (
+                float(match.group("net_rr")),
+                float(match.group("pin_rr")),
+            )
+
+    return metrics
+
+
 def remove_bottom_left_text(image: Image.Image) -> None:
     width, height = image.size
     left = round(width * 0.143)
@@ -121,7 +160,7 @@ def remove_bottom_left_text(image: Image.Image) -> None:
     top = round(height * 0.860)
     bottom = round(height * 0.890)
     board_left = round(width * 0.169)
-    board_bottom = round(height * 0.872)
+    board_bottom = round(height * 0.8688)
     line_width = max(2, round(width * 0.0046))
 
     draw = ImageDraw.Draw(image)
@@ -162,38 +201,72 @@ def compose_sides(
     return composite
 
 
+def load_metadata_font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
+    font_candidates = (
+        Path(r"C:\Windows\Fonts\seguisb.ttf"),
+        Path(r"C:\Windows\Fonts\segoeui.ttf"),
+    )
+    for font_path in font_candidates:
+        if font_path.is_file():
+            return ImageFont.truetype(str(font_path), size=size)
+
+    try:
+        return ImageFont.truetype("DejaVuSans-Bold.ttf", size=size)
+    except OSError:
+        return ImageFont.load_default(size=size)
+
+
+def draw_metadata_bar(frame: Image.Image, label: str) -> None:
+    draw = ImageDraw.Draw(frame)
+    font = load_metadata_font(size=34)
+    box = draw.textbbox((0, 0), label, font=font)
+    margin = 16
+    padding_x = 17
+    padding_y = 11
+    label_width = box[2] - box[0]
+    label_height = box[3] - box[1]
+    background = (
+        margin,
+        margin,
+        margin + label_width + 2 * padding_x,
+        margin + label_height + 2 * padding_y,
+    )
+    draw.rounded_rectangle(
+        background,
+        radius=11,
+        fill=(24, 30, 48),
+        outline=(65, 76, 105),
+        width=1,
+    )
+    draw.text(
+        (margin + padding_x - box[0], margin + padding_y - box[1]),
+        label,
+        fill=(248, 250, 252),
+        font=font,
+    )
+
+
 def prepare_frame(
     top_path: Path,
     bottom_path: Path,
     iteration: int,
+    net_rr: float,
+    pin_rr: float,
     max_width: int,
-    show_iteration_label: bool,
+    show_frame_metadata: bool,
 ) -> Image.Image:
     frame = compose_sides(top_path, bottom_path, clean_bottom_left_text=True)
     if max_width > 0 and frame.width > max_width:
         height = round(frame.height * max_width / frame.width)
         frame = frame.resize((max_width, height), Image.Resampling.LANCZOS)
 
-    if show_iteration_label:
-        label = f"Iteration {iteration}"
-        draw = ImageDraw.Draw(frame)
-        font = ImageFont.load_default(size=24)
-        box = draw.textbbox((0, 0), label, font=font)
-        margin = 12
-        padding_x = 12
-        padding_y = 8
-        label_width = box[2] - box[0]
-        label_height = box[3] - box[1]
-        left = frame.width - margin - label_width - 2 * padding_x
-        top = frame.height - margin - label_height - 2 * padding_y
-        background = (left, top, frame.width - margin, frame.height - margin)
-        draw.rounded_rectangle(background, radius=8, fill="white", outline="black")
-        draw.text(
-            (left + padding_x - box[0], top + padding_y - box[1]),
-            label,
-            fill="black",
-            font=font,
+    if show_frame_metadata:
+        label = (
+            f"Iteration {iteration}   \u2022   "
+            f"Net RR {net_rr:.2f}%   \u2022   "
+            f"Pin RR {pin_rr:.2f}%"
         )
+        draw_metadata_bar(frame, label)
     else:
         color = ((iteration * 73) % 256, (iteration * 151) % 256, (iteration * 199) % 256)
         ImageDraw.Draw(frame).rectangle(
@@ -230,6 +303,8 @@ def write_ground_truth(input_dir: Path, output_dir: Path, max_width: int) -> Pat
             Image.Resampling.LANCZOS,
         )
 
+    draw_metadata_bar(ground_truth, "Net RR 100%   \u2022   Pin RR 100%")
+
     output_path = output_dir / GROUND_TRUTH_FILENAME
     ground_truth.save(output_path, optimize=True)
     return output_path
@@ -247,6 +322,17 @@ def main() -> None:
     jobs = collect_jobs(input_dir)
     if not jobs:
         raise SystemExit(f"No paired top/bottom iterations found in {input_dir}")
+    step_metrics = load_step_metrics(input_dir)
+    missing_metrics = [
+        f"{model}/iteration {iteration}"
+        for _, model, frame_paths in jobs
+        for iteration, _, _ in frame_paths
+        if (model, iteration) not in step_metrics
+    ]
+    if missing_metrics:
+        raise SystemExit(
+            "Missing Net RR / Pin RR metrics for: " + ", ".join(missing_metrics)
+        )
 
     output_dir.mkdir(parents=True, exist_ok=True)
     if args.clean:
@@ -267,7 +353,14 @@ def main() -> None:
     shared_iterations = max(len(frame_paths) for _, _, frame_paths in jobs)
     for index, (setup, model, frame_paths) in enumerate(jobs, start=1):
         images = [
-            prepare_frame(top, bottom, iteration, args.max_width, not args.no_iteration_label)
+            prepare_frame(
+                top,
+                bottom,
+                iteration,
+                *step_metrics[(model, iteration)],
+                args.max_width,
+                not args.no_frame_metadata,
+            )
             for iteration, top, bottom in frame_paths
         ]
         durations = [args.frame_ms] * len(images)
