@@ -320,8 +320,8 @@ section {
 }
 .model-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .model-card {
@@ -770,6 +770,12 @@ footer {
 
 footer a {
   color: #c7d2fe;
+}
+
+@media (max-width: 1200px) {
+  .model-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 1050px) {

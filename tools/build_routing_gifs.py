@@ -229,7 +229,7 @@ def draw_metadata_bar(frame: Image.Image, label: str) -> None:
     margin = 16
     padding_x = 17
     padding_y = 11
-    font_size = 34
+    font_size = 44
     max_label_width = frame.width - 2 * margin - 2 * padding_x
     while True:
         font = load_metadata_font(size=font_size)
