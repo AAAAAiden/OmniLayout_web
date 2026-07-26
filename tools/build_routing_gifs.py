@@ -46,9 +46,9 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--max-width", type=int, default=1080)
     parser.add_argument(
-        "--iteration-label",
+        "--no-iteration-label",
         action="store_true",
-        help="Draw the iteration number inside each GIF frame.",
+        help="Do not draw the iteration number inside each GIF frame.",
     )
     parser.add_argument(
         "--clean",
@@ -114,17 +114,46 @@ def collect_jobs(input_dir: Path) -> list[tuple[str, str, list[tuple[int, Path, 
     return jobs
 
 
-def open_on_white(path: Path) -> Image.Image:
+def remove_bottom_left_text(image: Image.Image) -> None:
+    width, height = image.size
+    left = round(width * 0.143)
+    right = round(width * 0.196)
+    top = round(height * 0.860)
+    bottom = round(height * 0.890)
+    board_left = round(width * 0.169)
+    board_bottom = round(height * 0.872)
+    line_width = max(2, round(width * 0.0046))
+
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((left, top, right, bottom), fill="white")
+    draw.rectangle(
+        (board_left, top, board_left + line_width - 1, board_bottom + line_width - 1),
+        fill="black",
+    )
+    draw.rectangle(
+        (board_left, board_bottom, right, board_bottom + line_width - 1),
+        fill="black",
+    )
+
+
+def open_on_white(path: Path, clean_bottom_left_text: bool = False) -> Image.Image:
     with Image.open(path) as source:
         rgba = source.convert("RGBA")
     canvas = Image.new("RGBA", rgba.size, "white")
     canvas.alpha_composite(rgba)
-    return canvas.convert("RGB")
+    image = canvas.convert("RGB")
+    if clean_bottom_left_text:
+        remove_bottom_left_text(image)
+    return image
 
 
-def compose_sides(top_path: Path, bottom_path: Path) -> Image.Image:
-    top = open_on_white(top_path)
-    bottom = open_on_white(bottom_path)
+def compose_sides(
+    top_path: Path,
+    bottom_path: Path,
+    clean_bottom_left_text: bool = False,
+) -> Image.Image:
+    top = open_on_white(top_path, clean_bottom_left_text)
+    bottom = open_on_white(bottom_path, clean_bottom_left_text)
     gap = 24
     width = max(top.width, bottom.width)
     composite = Image.new("RGB", (width, top.height + gap + bottom.height), "white")
@@ -140,7 +169,7 @@ def prepare_frame(
     max_width: int,
     show_iteration_label: bool,
 ) -> Image.Image:
-    frame = compose_sides(top_path, bottom_path)
+    frame = compose_sides(top_path, bottom_path, clean_bottom_left_text=True)
     if max_width > 0 and frame.width > max_width:
         height = round(frame.height * max_width / frame.width)
         frame = frame.resize((max_width, height), Image.Resampling.LANCZOS)
@@ -150,10 +179,21 @@ def prepare_frame(
         draw = ImageDraw.Draw(frame)
         font = ImageFont.load_default(size=24)
         box = draw.textbbox((0, 0), label, font=font)
-        padding = 10
-        background = (padding, padding, box[2] + 3 * padding, box[3] + 3 * padding)
+        margin = 12
+        padding_x = 12
+        padding_y = 8
+        label_width = box[2] - box[0]
+        label_height = box[3] - box[1]
+        left = frame.width - margin - label_width - 2 * padding_x
+        top = frame.height - margin - label_height - 2 * padding_y
+        background = (left, top, frame.width - margin, frame.height - margin)
         draw.rounded_rectangle(background, radius=8, fill="white", outline="black")
-        draw.text((2 * padding, 2 * padding), label, fill="black", font=font)
+        draw.text(
+            (left + padding_x - box[0], top + padding_y - box[1]),
+            label,
+            fill="black",
+            font=font,
+        )
     else:
         color = ((iteration * 73) % 256, (iteration * 151) % 256, (iteration * 199) % 256)
         ImageDraw.Draw(frame).rectangle(
@@ -227,7 +267,7 @@ def main() -> None:
     shared_iterations = max(len(frame_paths) for _, _, frame_paths in jobs)
     for index, (setup, model, frame_paths) in enumerate(jobs, start=1):
         images = [
-            prepare_frame(top, bottom, iteration, args.max_width, args.iteration_label)
+            prepare_frame(top, bottom, iteration, args.max_width, not args.no_iteration_label)
             for iteration, top, bottom in frame_paths
         ]
         durations = [args.frame_ms] * len(images)

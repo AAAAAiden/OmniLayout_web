@@ -128,8 +128,6 @@ const results = {
 };
 
 const activeSetup = "exp0";
-const gifFrameMs = 800;
-const gifFinalHoldMs = 10_000;
 const galleryModelIds = [
   "gpt-5-5",
   "gpt-5-mini",
@@ -155,7 +153,7 @@ function renderModelGrid() {
         <span class="model-tag">Ground truth</span>
       </div>
       <div class="trajectory">
-        <img src="gifs/ground-truth.png?v=adafruit-bluefruit-uart-v2" alt="Ground-truth Adafruit Bluefruit LE UART Friend PCB routing with top and bottom layers shown vertically">
+        <img src="gifs/ground-truth.png?v=adafruit-bluefruit-uart-v5" alt="Ground-truth Adafruit Bluefruit LE UART Friend PCB routing with top and bottom layers shown vertically">
       </div>
       <div class="model-card-footer">
         <span class="status-ready">Reference</span><span>Top and bottom layers</span>
@@ -174,10 +172,10 @@ function renderModelGrid() {
           </div>
           <div class="trajectory">
             <div class="trajectory-loading" aria-hidden="true">Loading synchronized animation...</div>
-            <img data-gif-src="gifs/${activeSetup}--${model.id}.gif?v=adafruit-bluefruit-uart-v2" data-frame-count="${count}" alt="${model.label} No Tools routing iterations" hidden>
+            <img data-gif-src="gifs/${activeSetup}--${model.id}.gif?v=adafruit-bluefruit-uart-v5" alt="${model.label} No Tools routing iterations" hidden>
           </div>
           <div class="model-card-footer">
-            <span class="status-ready">Available</span><span class="iteration-counter">Iteration 1</span>
+            <span class="status-ready">Available</span>
           </div>
         </article>
       `;
@@ -198,14 +196,6 @@ async function synchronizeGifs() {
   );
 
   requestAnimationFrame(() => {
-    const syncStart = performance.now();
-    const sharedIterations = Math.max(
-      1,
-      ...loaded.filter(({ ok }) => ok).map(({ image }) => Number(image.dataset.frameCount)),
-    );
-    const cycleMs = sharedIterations * gifFrameMs + gifFinalHoldMs;
-    const syncedImages = [];
-
     loaded.forEach(({ image, source, ok }) => {
       const loading = image.previousElementSibling;
       if (!ok) {
@@ -215,22 +205,7 @@ async function synchronizeGifs() {
       image.src = source;
       image.hidden = false;
       loading.remove();
-      syncedImages.push({
-        count: Number(image.dataset.frameCount),
-        counter: image.closest(".model-card").querySelector(".iteration-counter"),
-      });
     });
-
-    function updateIterationCounters(now) {
-      const elapsed = (now - syncStart) % cycleMs;
-      syncedImages.forEach(({ count, counter }) => {
-        const currentIteration = Math.min(Math.floor(elapsed / gifFrameMs) + 1, count);
-        counter.textContent = `Iteration ${currentIteration}`;
-      });
-      requestAnimationFrame(updateIterationCounters);
-    }
-
-    requestAnimationFrame(updateIterationCounters);
   });
 }
 
