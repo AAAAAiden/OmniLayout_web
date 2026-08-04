@@ -157,10 +157,27 @@ a {
   font-style: normal;
 }
 
-.submission {
-  margin-bottom: 16px;
-  color: #c7c7e8;
+.hero-authors {
+  max-width: 980px;
+  margin: 0 auto 8px;
+  color: #f1f1fb;
   font-size: 13px;
+  font-weight: 600;
+  line-height: 1.65;
+}
+
+.hero-affiliations {
+  max-width: 980px;
+  margin: 0 auto 18px;
+  color: #c7c7e8;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.hero-authors sup,
+.hero-affiliations sup {
+  color: var(--purple-light);
+  font-size: 0.72em;
 }
 
 .hero-copy {
@@ -843,6 +860,14 @@ footer a {
 
   .hero-copy {
     font-size: 14px;
+  }
+
+  .hero-authors {
+    font-size: 12px;
+  }
+
+  .hero-affiliations {
+    font-size: 10px;
   }
 
   section {
