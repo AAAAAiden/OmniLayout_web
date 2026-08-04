@@ -120,14 +120,43 @@ function filterModels(items, filter) {
   });
 }
 
+function rankModelsByNrr(items, getRows) {
+  return items
+    .map((item) => {
+      const nrrValues = getRows(item)
+        .map((values) => Number.parseFloat(values[0]))
+        .filter(Number.isFinite);
+      return {
+        ...item,
+        bestNrr: nrrValues.length ? Math.max(...nrrValues) : null,
+      };
+    })
+    .sort((a, b) => (b.bestNrr ?? -Infinity) - (a.bestNrr ?? -Infinity))
+    .map((item, index) => ({
+      ...item,
+      rank: item.bestNrr === null ? null : index + 1,
+    }));
+}
+
+function rankTag(rank) {
+  if (rank === 1) return '<span class="rank-tag rank-first">1st</span>';
+  if (rank === 2) return '<span class="rank-tag rank-second">2nd</span>';
+  if (rank === 3) return '<span class="rank-tag rank-third">3rd</span>';
+  return "";
+}
+
 function renderOneShotTable(filter = "all") {
   const body = document.getElementById("oneShotBody");
-  body.innerHTML = filterModels(oneShotModels, filter)
+  const rankedModels = rankModelsByNrr(
+    oneShotModels,
+    (model) => model.rows.map(([, values]) => values),
+  );
+  body.innerHTML = filterModels(rankedModels, filter)
     .map((model) => model.rows.map(([experiment, values], rowIndex) => `
       <tr class="${rowIndex === 0 ? "model-group-start" : ""}">
-        ${rowIndex === 0 ? `<td class="model-col" rowspan="${model.rows.length}">${model.label}<span class="model-type">${model.type === "commercial" ? "Commercial" : "Open source"}</span></td><td class="size-col" rowspan="${model.rows.length}">${model.size}</td>` : ""}
+        ${rowIndex === 0 ? `<td class="model-col" rowspan="${model.rows.length}">${model.label}${rankTag(model.rank)}<span class="model-type">${model.type === "commercial" ? "Commercial" : "Open source"}</span></td><td class="size-col" rowspan="${model.rows.length}">${model.size}</td>` : ""}
         <td class="configuration-col">${experiment}</td>
-        ${values.map((value) => `<td>${paperValue(value)}</td>`).join("")}
+        ${values.map((value, valueIndex) => `<td class="${valueIndex === 0 ? "nrr-rank-col" : ""}">${paperValue(value)}</td>`).join("")}
       </tr>
     `).join(""))
     .join("");
@@ -135,15 +164,19 @@ function renderOneShotTable(filter = "all") {
 
 function renderAgenticTable(filter = "all") {
   const body = document.getElementById("agenticBody");
-  body.innerHTML = filterModels(models, filter)
+  const rankedModels = rankModelsByNrr(
+    models,
+    (model) => agenticSetupOrder.map((setupId) => results[setupId][model.id] || emptyRow()),
+  );
+  body.innerHTML = filterModels(rankedModels, filter)
     .map((model) => agenticSetupOrder.map((setupId, rowIndex) => {
       const setup = setups.find((item) => item.id === setupId);
       const values = results[setupId][model.id] || emptyRow();
       return `
         <tr class="${rowIndex === 0 ? "model-group-start" : ""}">
-          ${rowIndex === 0 ? `<td class="model-col" rowspan="${agenticSetupOrder.length}">${model.label}<span class="model-type">${model.type}</span></td><td class="size-col" rowspan="${agenticSetupOrder.length}">${agenticSizes[model.id]}</td>` : ""}
+          ${rowIndex === 0 ? `<td class="model-col" rowspan="${agenticSetupOrder.length}">${model.label}${rankTag(model.rank)}<span class="model-type">${model.type}</span></td><td class="size-col" rowspan="${agenticSetupOrder.length}">${agenticSizes[model.id]}</td>` : ""}
           <td class="configuration-col">${setup.label}</td>
-          ${values.map((value) => `<td>${paperValue(value)}</td>`).join("")}
+          ${values.map((value, valueIndex) => `<td class="${valueIndex === 0 ? "nrr-rank-col" : ""}">${paperValue(value)}</td>`).join("")}
         </tr>
       `;
     }).join(""))

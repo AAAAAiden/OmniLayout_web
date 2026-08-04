@@ -620,6 +620,48 @@ td.pending {
   border-top: 0;
 }
 
+.nrr-rank-col {
+  color: #9a3412;
+  background: #fff7ed;
+  font-weight: 700;
+}
+
+th.nrr-rank-col {
+  color: #7c2d12;
+  background: linear-gradient(180deg, #ffedd5 0%, #fed7aa 100%);
+}
+
+.rank-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border: 1px solid;
+  border-radius: 999px;
+  font-size: 10px;
+  line-height: 1.2;
+  vertical-align: middle;
+}
+
+.rank-first {
+  color: #92400e;
+  background: #fef3c7;
+  border-color: #fcd34d;
+}
+
+.rank-second {
+  color: #374151;
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.rank-third {
+  color: #9a3412;
+  background: #ffedd5;
+  border-color: #fdba74;
+}
+
 .dash {
   color: #b0b5bf;
 }

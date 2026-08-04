@@ -123,6 +123,7 @@
           <strong>NRR</strong> is the percentage of required nets that are connected and free of published design-rule violations;
           <strong>PRR</strong> is the percentage of required independent DRC-clean pad-to-pad connections. Missing outputs remain
           in both routability denominators. Higher is better for PR, NRR, and PRR; lower is better for violations, length, and runtime.
+          Rankings use each model's highest <strong>NRR</strong> score.
         </p>
         <div class="table-toolbar">
           <span>Filter:</span>
@@ -146,7 +147,7 @@
                 <th colspan="2">Efficiency</th>
               </tr>
               <tr>
-                <th>NRR<br>(%) &uarr;</th><th>PRR<br>(%) &uarr;</th>
+                <th class="nrr-rank-col">NRR<br>(%) &uarr;</th><th>PRR<br>(%) &uarr;</th>
                 <th>Open<br>(%) &darr;</th><th>PShort<br>(%) &darr;</th><th>NShort<br>(%) &darr;</th>
                 <th>Total<br>&darr;</th><th>Clr.<br>&darr;</th><th>Dist.<br>&darr;</th><th>Polygon<br>(%)</th>
                 <th>TWL<br>&darr;</th><th>#Vias</th><th>#Layers</th>
@@ -165,6 +166,7 @@
           <strong>Routing Score</strong>, <strong>Semantic Input</strong>, <strong>Prerouting/Remake</strong>,
           and <strong>All Tools</strong>. PR uses 500 expected inputs. Avg. Steps is the mean number
           of recorded agent iterations. Higher is better for PR, NRR, and PRR; lower is better for violations, length, and runtime.
+          Rankings use each model's highest <strong>NRR</strong> score.
         </p>
         <div class="table-toolbar">
           <span>Filter:</span>
@@ -188,7 +190,7 @@
                 <th colspan="3">Efficiency</th>
               </tr>
               <tr>
-                <th>NRR<br>(%) &uarr;</th><th>PRR<br>(%) &uarr;</th>
+                <th class="nrr-rank-col">NRR<br>(%) &uarr;</th><th>PRR<br>(%) &uarr;</th>
                 <th>Open<br>(%) &darr;</th><th>PShort<br>(%) &darr;</th><th>NShort<br>(%) &darr;</th>
                 <th>Total<br>&darr;</th><th>Clr.<br>&darr;</th><th>Dist.<br>&darr;</th><th>Polygon<br>(%)</th>
                 <th>TWL<br>&darr;</th><th>#Vias</th><th>#Layers</th>

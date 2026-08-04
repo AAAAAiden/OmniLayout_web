@@ -56,6 +56,11 @@ def parse_args() -> argparse.Namespace:
         help="Do not draw iteration and routability metrics inside each GIF frame.",
     )
     parser.add_argument(
+        "--ground-truth-only",
+        action="store_true",
+        help="Regenerate only the static ground-truth image.",
+    )
+    parser.add_argument(
         "--clean",
         action="store_true",
         help="Remove existing GIFs in the output directory before regeneration.",
@@ -211,6 +216,7 @@ def compose_sides(
 
 def load_metadata_font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
     font_candidates = (
+        Path(r"C:\Windows\Fonts\segoeuib.ttf"),
         Path(r"C:\Windows\Fonts\seguisb.ttf"),
         Path(r"C:\Windows\Fonts\segoeui.ttf"),
     )
@@ -229,7 +235,7 @@ def draw_metadata_bar(frame: Image.Image, label: str) -> None:
     margin = 16
     padding_x = 17
     padding_y = 11
-    font_size = 44
+    font_size = 58
     max_label_width = frame.width - 2 * margin - 2 * padding_x
     while True:
         font = load_metadata_font(size=font_size)
@@ -331,6 +337,12 @@ def main() -> None:
     if not input_dir.is_dir():
         raise SystemExit(f"Input directory does not exist: {input_dir}")
 
+    output_dir.mkdir(parents=True, exist_ok=True)
+    if args.ground_truth_only:
+        ground_truth_path = write_ground_truth(input_dir, output_dir, args.max_width)
+        print(f"Generated {ground_truth_path.name}")
+        return
+
     jobs = collect_jobs(input_dir)
     if not jobs:
         raise SystemExit(f"No paired top/bottom iterations found in {input_dir}")
@@ -346,7 +358,6 @@ def main() -> None:
             "Missing Net RR / Pin RR metrics for: " + ", ".join(missing_metrics)
         )
 
-    output_dir.mkdir(parents=True, exist_ok=True)
     if args.clean:
         removed = 0
         for path in output_dir.glob("*.gif"):
