@@ -826,19 +826,6 @@ th.nrr-rank-col {
   font-size: 12px;
 }
 
-.paper-link {
-  display: block;
-  width: fit-content;
-  margin: 0 auto;
-  padding: 10px 18px;
-  color: #fff;
-  background: #4f46e5;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 650;
-  text-decoration: none;
-}
-
 .reference-section {
   padding: 64px 5vw;
   background: #fafafa;
