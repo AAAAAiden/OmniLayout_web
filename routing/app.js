@@ -200,6 +200,34 @@ function closeCodeModal() {
   document.getElementById("codeModal").classList.remove("open");
 }
 
+function copyReference() {
+  const bibtex = document.querySelector(".reference-bibtex").textContent.trim();
+  const button = document.getElementById("copyReferenceBtn");
+  const markCopied = () => {
+    button.textContent = "Copied!";
+    window.setTimeout(() => {
+      button.textContent = "Copy";
+    }, 2000);
+  };
+
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(bibtex).then(markCopied).catch(() => copyReferenceFallback(bibtex, markCopied));
+    return;
+  }
+
+  copyReferenceFallback(bibtex, markCopied);
+}
+
+function copyReferenceFallback(bibtex, onSuccess) {
+  const textarea = document.createElement("textarea");
+  textarea.value = bibtex;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  textarea.remove();
+  onSuccess();
+}
+
 document.addEventListener("click", (event) => {
   if (event.target === document.getElementById("dataModal")) closeDataModal();
   if (event.target === document.getElementById("codeModal")) closeCodeModal();
