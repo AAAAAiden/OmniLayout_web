@@ -184,6 +184,34 @@ function renderModelGrid() {
   grid.innerHTML = groundTruthCard + modelCards;
 }
 
+function showDataModal() {
+  document.getElementById("dataModal").classList.add("open");
+}
+
+function closeDataModal() {
+  document.getElementById("dataModal").classList.remove("open");
+}
+
+function showCodeModal() {
+  document.getElementById("codeModal").classList.add("open");
+}
+
+function closeCodeModal() {
+  document.getElementById("codeModal").classList.remove("open");
+}
+
+document.addEventListener("click", (event) => {
+  if (event.target === document.getElementById("dataModal")) closeDataModal();
+  if (event.target === document.getElementById("codeModal")) closeCodeModal();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeDataModal();
+    closeCodeModal();
+  }
+});
+
 const ROUTING_GIF_LOOP_MS = 30_000;
 let routingGifLoopId = 0;
 let routingGifRestartTimer = null;
