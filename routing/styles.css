@@ -85,6 +85,18 @@ a {
   box-shadow: inset 0 0 0 1px rgba(165, 180, 252, 0.22);
 }
 
+.site-tabs a.omnimech-tab {
+  color: #3ee8ff;
+  background: rgba(62, 232, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(62, 232, 255, 0.28);
+  text-shadow: 0 0 12px rgba(62, 232, 255, 0.25);
+}
+
+.site-tabs a.omnimech-tab:hover {
+  color: #e8fcff;
+  background: rgba(62, 232, 255, 0.16);
+}
+
 .hero {
   position: relative;
   overflow: hidden;

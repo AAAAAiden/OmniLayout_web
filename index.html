@@ -3,7 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OmniLayout Benchmark</title>
+<title>OmniLayout | PCB Layout Reasoning Benchmark · OmniEDA</title>
+<meta name="description" content="OmniLayout is OmniEDA's schematic-coupled multimodal benchmark for constraint-aware PCB component placement, routing, and electrical reasoning.">
+<meta name="keywords" content="OmniLayout, OmniEDA, OmniCAD, PCB layout benchmark, PCB placement, electronic design automation, EDA benchmark, multimodal reasoning, geometric reasoning, agentic AI, Taiting Lu, Kaiyuan Lin, Mingjia Wang, Haolin Ye, Runze Liu, Yuxin Tian, Vahe Melkonyan, Haoyu Wang, Muchuan Wang, Chufan Hong, Yifan Yang, Sung-Liang Chen, Yi-Chao Chen, Yicheng Jin, Mahanth Gowda">
+<meta name="author" content="Taiting Lu, Kaiyuan Lin, Mingjia Wang, Haolin Ye, Runze Liu, Yuxin Tian, Vahe Melkonyan, Haoyu Wang, Muchuan Wang, Chufan Hong, Yifan Yang, Sung-Liang Chen, Yi-Chao Chen, Yicheng Jin, Mahanth Gowda">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<link rel="canonical" href="https://www.omnieda.com/">
+<link rel="alternate" type="text/html" title="OmniRouting" href="https://www.omnieda.com/routing/">
+<link rel="alternate" type="text/html" title="OmniMech" href="https://www.omnieda.com/mech/">
+<meta property="og:site_name" content="OmniEDA">
+<meta property="og:title" content="OmniLayout | PCB Layout Reasoning Benchmark">
+<meta property="og:description" content="A schematic-coupled multimodal benchmark for constraint-aware geometric and electrical reasoning in PCB layout.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.omnieda.com/">
+<meta property="og:image" content="https://www.omnieda.com/figs/dataset_overview-1.png">
+<meta property="og:image:alt" content="Overview of the OmniLayout PCB layout reasoning benchmark">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OmniLayout | OmniEDA">
+<meta name="twitter:description" content="Constraint-aware multimodal reasoning for industrial PCB layout.">
+<meta name="twitter:image" content="https://www.omnieda.com/figs/dataset_overview-1.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ScholarlyArticle","headline":"OmniLayout: A Schematic-Coupled Multimodal Benchmark for Constraint-Aware Geometric Reasoning in PCB Layout","url":"https://www.omnieda.com/","image":"https://www.omnieda.com/figs/dataset_overview-1.png","datePublished":"2026","keywords":["OmniLayout","OmniEDA","OmniCAD","PCB layout","electronic design automation","multimodal reasoning","agentic AI"],"author":[{"@type":"Person","name":"Taiting Lu"},{"@type":"Person","name":"Kaiyuan Lin"},{"@type":"Person","name":"Mingjia Wang"},{"@type":"Person","name":"Haolin Ye"},{"@type":"Person","name":"Runze Liu"},{"@type":"Person","name":"Yuxin Tian"},{"@type":"Person","name":"Vahe Melkonyan"},{"@type":"Person","name":"Haoyu Wang"},{"@type":"Person","name":"Muchuan Wang"},{"@type":"Person","name":"Chufan Hong"},{"@type":"Person","name":"Yifan Yang"},{"@type":"Person","name":"Sung-Liang Chen"},{"@type":"Person","name":"Yi-Chao Chen"},{"@type":"Person","name":"Yicheng Jin"},{"@type":"Person","name":"Mahanth Gowda"}],"publisher":{"@type":"Organization","name":"OmniEDA","url":"https://www.omnieda.com/"},"isPartOf":{"@type":"CollectionPage","name":"OmniEDA Research Benchmarks","url":"https://www.omnieda.com/"},"relatedLink":["https://www.omnieda.com/routing/","https://www.omnieda.com/mech/"]}</script>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* 鈹€鈹€ RESET & BASE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
@@ -54,6 +73,16 @@ body {
   color: #fff;
   background: rgba(165, 180, 252, 0.18);
   box-shadow: inset 0 0 0 1px rgba(165, 180, 252, 0.22);
+}
+.site-tabs a.omnimech-tab {
+  color: #3ee8ff;
+  background: rgba(62, 232, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(62, 232, 255, 0.28);
+  text-shadow: 0 0 12px rgba(62, 232, 255, 0.25);
+}
+.site-tabs a.omnimech-tab:hover {
+  color: #e8fcff;
+  background: rgba(62, 232, 255, 0.16);
 }
 @media (max-width: 620px) {
   .site-nav { padding: 0 14px; }
@@ -977,6 +1006,7 @@ document.getElementById('app').innerHTML = `
   <div class="site-tabs">
     <a class="active" href="./" aria-current="page">OmniLayout</a>
     <a href="routing/">OmniRouting</a>
+    <a class="omnimech-tab" href="mech/">OmniMech</a>
   </div>
 </nav>
 
