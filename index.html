@@ -31,6 +31,7 @@
 <link rel="canonical" href="https://www.omnieda.com/">
 <link rel="alternate" type="text/html" title="OmniRouting" href="https://www.omnieda.com/routing/">
 <link rel="alternate" type="text/html" title="OmniMech" href="https://omnimech.dev/">
+<link rel="alternate" type="text/html" title="OmniSch" href="https://omnisch.com/">
 <meta property="og:site_name" content="OmniEDA">
 <meta property="og:title" content="OmniLayout | Accepted at EMNLP 2026">
 <meta property="og:description" content="Accepted at EMNLP 2026: a schematic-coupled multimodal benchmark for constraint-aware geometric and electrical reasoning in PCB layout.">
@@ -42,7 +43,7 @@
 <meta name="twitter:title" content="OmniLayout | Accepted at EMNLP 2026">
 <meta name="twitter:description" content="Accepted at EMNLP 2026: constraint-aware multimodal reasoning for industrial PCB layout.">
 <meta name="twitter:image" content="https://www.omnieda.com/figs/dataset_overview-1.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ScholarlyArticle","headline":"OmniLayout: A Schematic-Coupled Multimodal Benchmark for Constraint-Aware Geometric Reasoning in PCB Layout","url":"https://www.omnieda.com/","sameAs":"https://arxiv.org/abs/2607.03261","identifier":["arXiv:2607.03261","https://doi.org/10.48550/arXiv.2607.03261"],"image":"https://www.omnieda.com/figs/dataset_overview-1.png","datePublished":"2026-07-03","dateModified":"2026-08-21","keywords":["OmniLayout","EMNLP 2026","OmniEDA","OmniCAD","PCB layout","electronic design automation","multimodal reasoning","agentic AI"],"author":[{"@type":"Person","name":"Taiting Lu"},{"@type":"Person","name":"Kaiyuan Lin"},{"@type":"Person","name":"Mingjia Wang"},{"@type":"Person","name":"Haolin Ye"},{"@type":"Person","name":"Runze Liu"},{"@type":"Person","name":"Yuxin Tian"},{"@type":"Person","name":"Vahe Melkonyan"},{"@type":"Person","name":"Haoyu Wang"},{"@type":"Person","name":"Muchuan Wang"},{"@type":"Person","name":"Chufan Hong"},{"@type":"Person","name":"Yifan Yang"},{"@type":"Person","name":"Sung-Liang Chen"},{"@type":"Person","name":"Yi-Chao Chen"},{"@type":"Person","name":"Yincheng Jin"},{"@type":"Person","name":"Mahanth Gowda"}],"publisher":{"@type":"Organization","name":"OmniEDA","url":"https://www.omnieda.com/"},"isPartOf":{"@type":"CreativeWork","name":"Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing"},"relatedLink":["https://www.omnieda.com/routing/","https://omnimech.dev/"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ScholarlyArticle","headline":"OmniLayout: A Schematic-Coupled Multimodal Benchmark for Constraint-Aware Geometric Reasoning in PCB Layout","url":"https://www.omnieda.com/","sameAs":"https://arxiv.org/abs/2607.03261","identifier":["arXiv:2607.03261","https://doi.org/10.48550/arXiv.2607.03261"],"image":"https://www.omnieda.com/figs/dataset_overview-1.png","datePublished":"2026-07-03","dateModified":"2026-08-21","keywords":["OmniLayout","EMNLP 2026","OmniEDA","OmniCAD","PCB layout","electronic design automation","multimodal reasoning","agentic AI"],"author":[{"@type":"Person","name":"Taiting Lu"},{"@type":"Person","name":"Kaiyuan Lin"},{"@type":"Person","name":"Mingjia Wang"},{"@type":"Person","name":"Haolin Ye"},{"@type":"Person","name":"Runze Liu"},{"@type":"Person","name":"Yuxin Tian"},{"@type":"Person","name":"Vahe Melkonyan"},{"@type":"Person","name":"Haoyu Wang"},{"@type":"Person","name":"Muchuan Wang"},{"@type":"Person","name":"Chufan Hong"},{"@type":"Person","name":"Yifan Yang"},{"@type":"Person","name":"Sung-Liang Chen"},{"@type":"Person","name":"Yi-Chao Chen"},{"@type":"Person","name":"Yincheng Jin"},{"@type":"Person","name":"Mahanth Gowda"}],"publisher":{"@type":"Organization","name":"OmniEDA","url":"https://www.omnieda.com/"},"isPartOf":{"@type":"CreativeWork","name":"Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing"},"relatedLink":["https://www.omnieda.com/routing/","https://omnimech.dev/","https://omnisch.com/"]}</script>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* 鈹€鈹€ RESET & BASE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
@@ -105,8 +106,10 @@ body {
   background: rgba(62, 232, 255, 0.16);
 }
 @media (max-width: 620px) {
-  .site-nav { padding: 0 14px; }
-  .site-tabs a { padding: 6px 9px; font-size: 12px; }
+  .site-nav { justify-content: center; padding: 0 8px; }
+  .site-brand { display: none; }
+  .site-tabs { gap: 2px; }
+  .site-tabs a { padding: 6px 7px; font-size: 11px; }
 }
 
 .container {
@@ -1053,6 +1056,7 @@ document.getElementById('app').innerHTML = `
 <nav class="site-nav" aria-label="Benchmark navigation">
   <a class="site-brand" href="./">Omni<span>EDA</span></a>
   <div class="site-tabs">
+    <a href="https://omnisch.com/">OmniSch</a>
     <a class="active" href="./" aria-current="page">OmniLayout</a>
     <a href="routing/">OmniRouting</a>
     <a class="omnimech-tab" href="https://omnimech.dev/">OmniMech</a>
@@ -1063,7 +1067,7 @@ document.getElementById('app').innerHTML = `
   <div class="hero-inner">
     <h1>OmniLayout: A Schematic-Coupled Multimodal Benchmark for<br><em>Constraint-Aware Geometric Reasoning in PCB Layout</em></h1>
     <div class="hero-authors">
-      Taiting Lu<sup>*1</sup>, Kaiyuan Lin<sup>*1</sup>, Mingjia Wang<sup>2</sup>, Haolin Ye<sup>1</sup>, Runze Liu<sup>1</sup>, Yuxin Tian<sup>3</sup>,
+      Taiting Lu<sup>*1</sup>, Kaiyuan Lin<sup>1</sup>, Mingjia Wang<sup>2</sup>, Haolin Ye<sup>1</sup>, Runze Liu<sup>1</sup>, Yuxin Tian<sup>3</sup>,
       Vahe Melkonyan<sup>1</sup>, Haoyu Wang<sup>1</sup>, Muchuan Wang<sup>1</sup>, Chufan Hong<sup>3</sup>,<br>
       Yifan Yang<sup>4</sup>, Sung-Liang Chen<sup>2</sup>, Yi-Chao Chen<sup>2</sup>, Yincheng Jin<sup>5</sup>, Mahanth Gowda<sup>†1</sup>
     </div>
@@ -1075,7 +1079,7 @@ document.getElementById('app').innerHTML = `
       <sup>5</sup> Binghamton University
     </div>
     <div class="venue-badge">Accepted at EMNLP 2026</div>
-    <div class="hero-note"><sup>*</sup> First authors (equal contribution). &nbsp; <sup>†</sup> Corresponding authors.</div>
+    <div class="hero-note"><sup>*</sup> First author. &nbsp; <sup>†</sup> Corresponding author.</div>
     <div class="link-pills">
       <a class="pill pill-paper" href="https://arxiv.org/abs/2607.03261" target="_blank" rel="noopener noreferrer">${IC.arxiv} arXiv</a>
       <a class="pill pill-code" href="#" onclick="showCodeModal(event)">${IC.code} Code</a>

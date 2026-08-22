@@ -1137,12 +1137,21 @@ footer a {
 
 @media (max-width: 720px) {
   .site-nav {
-    padding: 0 14px;
+    justify-content: center;
+    padding: 0 8px;
+  }
+
+  .brand {
+    display: none;
+  }
+
+  .site-tabs {
+    gap: 2px;
   }
 
   .site-tabs a {
-    padding: 6px 9px;
-    font-size: 12px;
+    padding: 6px 7px;
+    font-size: 11px;
   }
 
   .hero {
