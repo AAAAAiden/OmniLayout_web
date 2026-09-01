@@ -1,0 +1,319 @@
+{
+  "samples": [
+    {
+      "case_key": "case-01",
+      "case_no": 1,
+      "sample_name": "2129_01871_02497_Robotic_Arm_23ea8dcb",
+      "reference_views": [
+        "reference_views/case-01_v01.png",
+        "reference_views/case-01_v02.png",
+        "reference_views/case-01_v03.png",
+        "reference_views/case-01_v04.png",
+        "reference_views/case-01_v05.png",
+        "reference_views/case-01_v06.png",
+        "reference_views/case-01_v07.png",
+        "reference_views/case-01_v08.png"
+      ],
+      "library_parts": [
+        {
+          "library_id": "lib00001",
+          "glb": "models/case-01_lib00001.glb"
+        },
+        {
+          "library_id": "lib00002",
+          "glb": "models/case-01_lib00002.glb"
+        },
+        {
+          "library_id": "lib00003",
+          "glb": "models/case-01_lib00003.glb"
+        },
+        {
+          "library_id": "lib00004",
+          "glb": "models/case-01_lib00004.glb"
+        },
+        {
+          "library_id": "lib00005",
+          "glb": "models/case-01_lib00005.glb"
+        },
+        {
+          "library_id": "lib00006",
+          "glb": "models/case-01_lib00006.glb"
+        },
+        {
+          "library_id": "lib00007",
+          "glb": "models/case-01_lib00007.glb"
+        }
+      ],
+      "results": {
+        "gt": "models/case-01_ground_truth.glb",
+        "gpt55": "models/case-01_gpt55.glb",
+        "gpt54mini": null,
+        "claude48": "models/case-01_claude48.glb",
+        "gemini31": "models/case-01_gemini31.glb",
+        "gemini25": "models/case-01_gemini25.glb",
+        "qwen37": "models/case-01_qwen37.glb",
+        "qwen35": null
+      }
+    },
+    {
+      "case_key": "case-02",
+      "case_no": 2,
+      "sample_name": "2149_0215_prepared_3824__02541_SR10C_953609b4",
+      "reference_views": [
+        "reference_views/case-02_v01.png",
+        "reference_views/case-02_v02.png",
+        "reference_views/case-02_v03.png",
+        "reference_views/case-02_v04.png",
+        "reference_views/case-02_v05.png",
+        "reference_views/case-02_v06.png",
+        "reference_views/case-02_v07.png",
+        "reference_views/case-02_v08.png"
+      ],
+      "library_parts": [
+        {
+          "library_id": "lib00001",
+          "glb": "models/case-02_lib00001.glb"
+        },
+        {
+          "library_id": "lib00002",
+          "glb": "models/case-02_lib00002.glb"
+        },
+        {
+          "library_id": "lib00003",
+          "glb": "models/case-02_lib00003.glb"
+        },
+        {
+          "library_id": "lib00004",
+          "glb": "models/case-02_lib00004.glb"
+        },
+        {
+          "library_id": "lib00005",
+          "glb": "models/case-02_lib00005.glb"
+        },
+        {
+          "library_id": "lib00006",
+          "glb": "models/case-02_lib00006.glb"
+        },
+        {
+          "library_id": "lib00007",
+          "glb": "models/case-02_lib00007.glb"
+        }
+      ],
+      "results": {
+        "gt": "models/case-02_ground_truth.glb",
+        "gpt55": null,
+        "gpt54mini": null,
+        "claude48": null,
+        "gemini31": null,
+        "gemini25": null,
+        "qwen37": null,
+        "qwen35": null
+      }
+    },
+    {
+      "case_key": "case-03",
+      "case_no": 3,
+      "sample_name": "2211_00712_00876_Assem1_45ed28d6",
+      "reference_views": [
+        "reference_views/case-03_v01.png",
+        "reference_views/case-03_v02.png",
+        "reference_views/case-03_v03.png",
+        "reference_views/case-03_v04.png",
+        "reference_views/case-03_v05.png",
+        "reference_views/case-03_v06.png",
+        "reference_views/case-03_v07.png",
+        "reference_views/case-03_v08.png"
+      ],
+      "library_parts": [
+        {
+          "library_id": "lib00001",
+          "glb": "models/case-03_lib00001.glb"
+        },
+        {
+          "library_id": "lib00002",
+          "glb": "models/case-03_lib00002.glb"
+        },
+        {
+          "library_id": "lib00003",
+          "glb": "models/case-03_lib00003.glb"
+        },
+        {
+          "library_id": "lib00004",
+          "glb": "models/case-03_lib00004.glb"
+        },
+        {
+          "library_id": "lib00005",
+          "glb": "models/case-03_lib00005.glb"
+        },
+        {
+          "library_id": "lib00006",
+          "glb": "models/case-03_lib00006.glb"
+        },
+        {
+          "library_id": "lib00007",
+          "glb": "models/case-03_lib00007.glb"
+        }
+      ],
+      "results": {
+        "gt": "models/case-03_ground_truth.glb",
+        "gpt55": "models/case-03_gpt55.glb",
+        "gpt54mini": null,
+        "claude48": "models/case-03_claude48.glb",
+        "gemini31": "models/case-03_gemini31.glb",
+        "gemini25": "models/case-03_gemini25.glb",
+        "qwen37": null,
+        "qwen35": null
+      }
+    },
+    {
+      "case_key": "case-04",
+      "case_no": 4,
+      "sample_name": "2652_0341_prepared_3824__01915_SEPC2826.07.Humanoid.Robot.Product_7f613a36",
+      "reference_views": [
+        "reference_views/case-04_v01.png",
+        "reference_views/case-04_v02.png",
+        "reference_views/case-04_v03.png",
+        "reference_views/case-04_v04.png",
+        "reference_views/case-04_v05.png",
+        "reference_views/case-04_v06.png",
+        "reference_views/case-04_v07.png",
+        "reference_views/case-04_v08.png"
+      ],
+      "library_parts": [
+        {
+          "library_id": "lib00001",
+          "glb": "models/case-04_lib00001.glb"
+        },
+        {
+          "library_id": "lib00002",
+          "glb": "models/case-04_lib00002.glb"
+        },
+        {
+          "library_id": "lib00003",
+          "glb": "models/case-04_lib00003.glb"
+        },
+        {
+          "library_id": "lib00004",
+          "glb": "models/case-04_lib00004.glb"
+        },
+        {
+          "library_id": "lib00005",
+          "glb": "models/case-04_lib00005.glb"
+        },
+        {
+          "library_id": "lib00006",
+          "glb": "models/case-04_lib00006.glb"
+        },
+        {
+          "library_id": "lib00007",
+          "glb": "models/case-04_lib00007.glb"
+        },
+        {
+          "library_id": "lib00008",
+          "glb": "models/case-04_lib00008.glb"
+        },
+        {
+          "library_id": "lib00009",
+          "glb": "models/case-04_lib00009.glb"
+        },
+        {
+          "library_id": "lib00010",
+          "glb": "models/case-04_lib00010.glb"
+        },
+        {
+          "library_id": "lib00011",
+          "glb": "models/case-04_lib00011.glb"
+        }
+      ],
+      "results": {
+        "gt": "models/case-04_ground_truth.glb",
+        "gpt55": null,
+        "gpt54mini": null,
+        "claude48": null,
+        "gemini31": null,
+        "gemini25": null,
+        "qwen37": null,
+        "qwen35": null
+      }
+    },
+    {
+      "case_key": "case-05",
+      "case_no": 5,
+      "sample_name": "2767_0389_prepared_3824__01763_KX.650_888498ce",
+      "reference_views": [
+        "reference_views/case-05_v01.png",
+        "reference_views/case-05_v02.png",
+        "reference_views/case-05_v03.png",
+        "reference_views/case-05_v04.png",
+        "reference_views/case-05_v05.png",
+        "reference_views/case-05_v06.png",
+        "reference_views/case-05_v07.png",
+        "reference_views/case-05_v08.png"
+      ],
+      "library_parts": [
+        {
+          "library_id": "lib00001",
+          "glb": "models/case-05_lib00001.glb"
+        },
+        {
+          "library_id": "lib00002",
+          "glb": "models/case-05_lib00002.glb"
+        },
+        {
+          "library_id": "lib00003",
+          "glb": "models/case-05_lib00003.glb"
+        },
+        {
+          "library_id": "lib00004",
+          "glb": "models/case-05_lib00004.glb"
+        },
+        {
+          "library_id": "lib00005",
+          "glb": "models/case-05_lib00005.glb"
+        },
+        {
+          "library_id": "lib00006",
+          "glb": "models/case-05_lib00006.glb"
+        },
+        {
+          "library_id": "lib00007",
+          "glb": "models/case-05_lib00007.glb"
+        },
+        {
+          "library_id": "lib00008",
+          "glb": "models/case-05_lib00008.glb"
+        },
+        {
+          "library_id": "lib00009",
+          "glb": "models/case-05_lib00009.glb"
+        },
+        {
+          "library_id": "lib00010",
+          "glb": "models/case-05_lib00010.glb"
+        },
+        {
+          "library_id": "lib00011",
+          "glb": "models/case-05_lib00011.glb"
+        },
+        {
+          "library_id": "lib00012",
+          "glb": "models/case-05_lib00012.glb"
+        },
+        {
+          "library_id": "lib00013",
+          "glb": "models/case-05_lib00013.glb"
+        }
+      ],
+      "results": {
+        "gt": "models/case-05_ground_truth.glb",
+        "gpt55": null,
+        "gpt54mini": null,
+        "claude48": "models/case-05_claude48.glb",
+        "gemini31": null,
+        "gemini25": "models/case-05_gemini25.glb",
+        "qwen37": null,
+        "qwen35": null
+      }
+    }
+  ]
+}
