@@ -844,13 +844,15 @@
 </script>
 
   <style id="project-navigation">
-    .project-nav{min-height:52px;padding:7px 24px;display:flex;align-items:center;justify-content:center;gap:6px;overflow-x:auto;scrollbar-width:none;background:#0f0c29;color:#c7c7e8;font:600 13px Arial,Helvetica,sans-serif;white-space:nowrap}
-    .project-nav::-webkit-scrollbar{display:none}.project-nav a{padding:7px 13px;border-radius:999px}.project-nav a:hover{color:#fff}.project-nav a.active{color:#fff;background:#a5b4fc2e;box-shadow:inset 0 0 0 1px #a5b4fc38}
-    @media(max-width:620px){.project-nav{justify-content:flex-start;padding-inline:8px;gap:2px}.project-nav a{padding:6px 7px;font-size:11px}}
+    .project-menu{position:relative}
+    .project-menu summary{list-style:none;cursor:pointer;padding:8px 11px;border:1px solid #31576a;color:#bfeef7;font:700 10px "Courier New",monospace;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+    .project-menu summary::-webkit-details-marker{display:none}.project-menu summary::after{content:" +"}.project-menu[open] summary::after{content:" −"}
+    .project-menu-links{position:absolute;z-index:40;right:0;top:calc(100% + 8px);min-width:170px;padding:7px;background:#071723;border:1px solid #31576a;box-shadow:0 14px 30px #0008;display:grid}
+    .project-menu-links a{padding:9px 10px;color:#91bacc;font:700 11px "Courier New",monospace;white-space:nowrap}.project-menu-links a:hover{color:#fff;background:#0b2b3a}.project-menu-links a.active{color:#3ee8ff}
+    body.bright .project-menu summary{background:#fff;color:#087f96;border-color:#92bdc5}body.bright .project-menu-links{background:#fff;border-color:#92bdc5;box-shadow:0 14px 30px #31576a33}body.bright .project-menu-links a{color:#365f6e}body.bright .project-menu-links a:hover{color:#087f96;background:#edf6f5}body.bright .project-menu-links a.active{color:#087f96}
   </style>
 </head>
 <body>
-  <nav class="project-nav" aria-label="Benchmark navigation"><a href="https://omnisch.com/">OmniSch</a><a href="../">OmniLayout</a><a href="../routing/">OmniRouting</a><a href="../mech/">OmniMech</a><a class="active" href="./" aria-current="page">OmniCAD</a></nav>
   <nav class="nav shell">
     <a class="wordmark" href="#top">OmniCAD</a>
     <div class="navlinks">
@@ -862,6 +864,16 @@
       <a href="#citation">Citation</a>
     </div>
     <div class="nav-actions">
+      <details class="project-menu">
+        <summary>Projects</summary>
+        <div class="project-menu-links">
+          <a href="https://omnisch.com/">OmniSch</a>
+          <a href="../">OmniLayout</a>
+          <a href="../routing/">OmniRouting</a>
+          <a href="../mech/">OmniMech</a>
+          <a class="active" href="./" aria-current="page">OmniCAD</a>
+        </div>
+      </details>
       <button class="theme-toggle" type="button" aria-label="Switch to bright theme" aria-pressed="false"><span>Bright</span></button>
       <a href="./public/omnicad-paper.pdf">Paper PDF ↗</a>
     </div>
