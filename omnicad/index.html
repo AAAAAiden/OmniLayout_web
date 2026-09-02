@@ -1100,7 +1100,7 @@
     (() => {
       const body=document.body;
       const toggle=document.querySelector('.theme-toggle');
-      const saved=localStorage.getItem('omnicad-theme');
+      const saved='dark';
       const apply=bright=>{body.classList.toggle('bright',bright);toggle?.setAttribute('aria-pressed',String(bright));toggle?.setAttribute('aria-label',bright?'Switch to dark theme':'Switch to bright theme');window.dispatchEvent(new CustomEvent('omnicad-themechange',{detail:{bright}}));};
       apply(saved==='bright');
       toggle?.addEventListener('click',()=>{const bright=!body.classList.contains('bright');localStorage.setItem('omnicad-theme',bright?'bright':'dark');apply(bright);});
