@@ -63,7 +63,10 @@ a {
   display: flex;
   align-items: center;
   gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.site-tabs::-webkit-scrollbar { display: none; }
 
 .site-tabs a {
   padding: 7px 13px;

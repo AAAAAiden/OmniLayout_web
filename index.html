@@ -30,7 +30,8 @@
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <link rel="canonical" href="https://www.omnieda.com/">
 <link rel="alternate" type="text/html" title="OmniRouting" href="https://www.omnieda.com/routing/">
-<link rel="alternate" type="text/html" title="OmniMech" href="https://omnimech.dev/">
+<link rel="alternate" type="text/html" title="OmniMech" href="https://www.omnieda.com/mech/">
+<link rel="alternate" type="text/html" title="OmniCAD" href="https://www.omnieda.com/omnicad/">
 <link rel="alternate" type="text/html" title="OmniSch" href="https://omnisch.com/">
 <meta property="og:site_name" content="OmniEDA">
 <meta property="og:title" content="OmniLayout | Accepted at EMNLP 2026">
@@ -43,7 +44,7 @@
 <meta name="twitter:title" content="OmniLayout | Accepted at EMNLP 2026">
 <meta name="twitter:description" content="Accepted at EMNLP 2026: constraint-aware multimodal reasoning for industrial PCB layout.">
 <meta name="twitter:image" content="https://www.omnieda.com/figs/dataset_overview-1.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ScholarlyArticle","headline":"OmniLayout: A Schematic-Coupled Multimodal Benchmark for Constraint-Aware Geometric Reasoning in PCB Layout","url":"https://www.omnieda.com/","sameAs":"https://arxiv.org/abs/2607.03261","identifier":["arXiv:2607.03261","https://doi.org/10.48550/arXiv.2607.03261"],"image":"https://www.omnieda.com/figs/dataset_overview-1.png","datePublished":"2026-07-03","dateModified":"2026-08-21","keywords":["OmniLayout","EMNLP 2026","OmniEDA","OmniCAD","PCB layout","electronic design automation","multimodal reasoning","agentic AI"],"author":[{"@type":"Person","name":"Taiting Lu"},{"@type":"Person","name":"Kaiyuan Lin"},{"@type":"Person","name":"Mingjia Wang"},{"@type":"Person","name":"Haolin Ye"},{"@type":"Person","name":"Runze Liu"},{"@type":"Person","name":"Yuxin Tian"},{"@type":"Person","name":"Vahe Melkonyan"},{"@type":"Person","name":"Haoyu Wang"},{"@type":"Person","name":"Muchuan Wang"},{"@type":"Person","name":"Chufan Hong"},{"@type":"Person","name":"Yifan Yang"},{"@type":"Person","name":"Sung-Liang Chen"},{"@type":"Person","name":"Yi-Chao Chen"},{"@type":"Person","name":"Yincheng Jin"},{"@type":"Person","name":"Mahanth Gowda"}],"publisher":{"@type":"Organization","name":"OmniEDA","url":"https://www.omnieda.com/"},"isPartOf":{"@type":"CreativeWork","name":"Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing"},"relatedLink":["https://www.omnieda.com/routing/","https://omnimech.dev/","https://omnisch.com/"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ScholarlyArticle","headline":"OmniLayout: A Schematic-Coupled Multimodal Benchmark for Constraint-Aware Geometric Reasoning in PCB Layout","url":"https://www.omnieda.com/","sameAs":"https://arxiv.org/abs/2607.03261","identifier":["arXiv:2607.03261","https://doi.org/10.48550/arXiv.2607.03261"],"image":"https://www.omnieda.com/figs/dataset_overview-1.png","datePublished":"2026-07-03","dateModified":"2026-08-21","keywords":["OmniLayout","EMNLP 2026","OmniEDA","OmniCAD","PCB layout","electronic design automation","multimodal reasoning","agentic AI"],"author":[{"@type":"Person","name":"Taiting Lu"},{"@type":"Person","name":"Kaiyuan Lin"},{"@type":"Person","name":"Mingjia Wang"},{"@type":"Person","name":"Haolin Ye"},{"@type":"Person","name":"Runze Liu"},{"@type":"Person","name":"Yuxin Tian"},{"@type":"Person","name":"Vahe Melkonyan"},{"@type":"Person","name":"Haoyu Wang"},{"@type":"Person","name":"Muchuan Wang"},{"@type":"Person","name":"Chufan Hong"},{"@type":"Person","name":"Yifan Yang"},{"@type":"Person","name":"Sung-Liang Chen"},{"@type":"Person","name":"Yi-Chao Chen"},{"@type":"Person","name":"Yincheng Jin"},{"@type":"Person","name":"Mahanth Gowda"}],"publisher":{"@type":"Organization","name":"OmniEDA","url":"https://www.omnieda.com/"},"isPartOf":{"@type":"CreativeWork","name":"Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing"},"relatedLink":["https://www.omnieda.com/routing/","https://www.omnieda.com/mech/","https://www.omnieda.com/omnicad/","https://omnisch.com/"]}</script>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* 鈹€鈹€ RESET & BASE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
@@ -79,7 +80,8 @@ body {
   text-decoration: none;
 }
 .site-brand span { color: #a5b4fc; }
-.site-tabs { display: flex; align-items: center; gap: 6px; }
+.site-tabs { display: flex; align-items: center; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.site-tabs::-webkit-scrollbar { display: none; }
 .site-tabs a {
   padding: 7px 13px;
   border-radius: 999px;
@@ -1059,7 +1061,8 @@ document.getElementById('app').innerHTML = `
     <a href="https://omnisch.com/">OmniSch</a>
     <a class="active" href="./" aria-current="page">OmniLayout</a>
     <a href="routing/">OmniRouting</a>
-    <a class="omnimech-tab" href="https://omnimech.dev/">OmniMech</a>
+    <a class="omnimech-tab" href="mech/">OmniMech</a>
+    <a href="omnicad/">OmniCAD</a>
   </div>
 </nav>
 

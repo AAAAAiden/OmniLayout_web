@@ -10,6 +10,8 @@
   <link rel="canonical" href="https://www.omnieda.com/mech/">
   <link rel="alternate" type="text/html" title="OmniLayout" href="https://www.omnieda.com/">
   <link rel="alternate" type="text/html" title="OmniRouting" href="https://www.omnieda.com/routing/">
+  <link rel="alternate" type="text/html" title="OmniCAD" href="https://www.omnieda.com/omnicad/">
+  <link rel="alternate" type="text/html" title="OmniSch" href="https://omnisch.com/">
   <meta property="og:site_name" content="OmniEDA">
   <meta property="og:title" content="OmniMech | Multimodal Mechanical CAD Benchmark">
   <meta property="og:description" content="A 251K-scale benchmark for precise, editable 3D CAD reconstruction from real engineering drawings.">
@@ -620,9 +622,15 @@
     #benchmark .card>img{filter:none;mix-blend-mode:normal;background:#fff;transition:filter .2s ease}
     body:not(.bright) #benchmark .card>img{filter:invert(.9) hue-rotate(180deg) brightness(1.12) saturate(1.18) contrast(1.06);background:transparent}
   </style>
+  <style id="project-navigation">
+    .project-nav{min-height:52px;padding:7px 24px;display:flex;align-items:center;justify-content:center;gap:6px;overflow-x:auto;scrollbar-width:none;background:#0f0c29;color:#c7c7e8;font:600 13px Arial,Helvetica,sans-serif;white-space:nowrap}
+    .project-nav::-webkit-scrollbar{display:none}.project-nav a{padding:7px 13px;border-radius:999px}.project-nav a:hover{color:#fff}.project-nav a.active{color:#fff;background:#a5b4fc2e;box-shadow:inset 0 0 0 1px #a5b4fc38}
+    @media(max-width:620px){.project-nav{justify-content:flex-start;padding-inline:8px;gap:2px}.project-nav a{padding:6px 7px;font-size:11px}}
+  </style>
 </head>
 <body>
-  <nav class="nav shell"><a class="wordmark" href="#top">OmniMech</a><div class="navlinks"><a href="#showcase">3D Showcase</a><a href="#benchmark">Benchmark</a><a href="#tasks">Tasks</a><a href="#zeroshot-results">Zeroshot Results</a><a href="#agentic-results">Agentic Results</a><a href="#citation">Citation</a></div><div class="nav-actions"><a class="omnieda-link" href="https://www.omnieda.com/">OmniEDA ↗</a><button class="theme-toggle" type="button" aria-label="Switch to bright theme" aria-pressed="false"><span>Bright</span></button><a href="https://arxiv.org/abs/2608.05539">arXiv:2608.05539 ↗</a></div></nav>
+  <nav class="project-nav" aria-label="Benchmark navigation"><a href="https://omnisch.com/">OmniSch</a><a href="../">OmniLayout</a><a href="../routing/">OmniRouting</a><a class="active" href="./" aria-current="page">OmniMech</a><a href="../omnicad/">OmniCAD</a></nav>
+  <nav class="nav shell"><a class="wordmark" href="#top">OmniMech</a><div class="navlinks"><a href="#showcase">3D Showcase</a><a href="#benchmark">Benchmark</a><a href="#tasks">Tasks</a><a href="#zeroshot-results">Zeroshot Results</a><a href="#agentic-results">Agentic Results</a><a href="#citation">Citation</a></div><div class="nav-actions"><button class="theme-toggle" type="button" aria-label="Switch to bright theme" aria-pressed="false"><span>Bright</span></button><a href="https://arxiv.org/abs/2608.05539">arXiv:2608.05539 ↗</a></div></nav>
   <main>
     <section class="hero shell" id="top"><div><h1>OmniMech</h1><h2>All-in-one Multimodal Mechanical Benchmark for 3D Reconstruction</h2><div class="actions"><a class="button" href="https://arxiv.org/pdf/2608.05539v1" download="omnimech-paper.pdf">Download paper ↓</a><a class="button dataset-button" href="./res/omnimech_samples.zip" download>Dataset Samples ↓</a><a class="button dataset-button" href="./res/omnimech_code.zip" download>Code ↓</a></div></div><div class="heroart"><img src="./public/media/overview.png" alt="Mechanical parts and reconstruction examples from OmniMech"><div class="badge b1">251K<small>paired models</small></div><div class="badge b2">28<small>views / model</small></div></div></section>
     <!-- <section class="statsband"><div class="shell stats"><div class="stat"><strong>251K</strong><span>drawing and<br>model pairs</span></div><div class="stat"><strong>15.62</strong><span>annotations<br>per drawing</span></div><div class="stat"><strong>28</strong><span>renders<br>per model</span></div><div class="stat"><strong>4</strong><span>evaluation<br>tasks</span></div></div></section> -->
