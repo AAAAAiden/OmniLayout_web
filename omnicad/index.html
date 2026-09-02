@@ -540,6 +540,20 @@
   @media(max-width:560px){
     .metrics-row.four{grid-template-columns:1fr;}
   }
+
+  /* Cross-paper links requested after Citation; scoped to the new dropdown only. */
+  .navlinks .paper-menu{position:relative;}
+  .navlinks .paper-menu summary{list-style:none;cursor:pointer;white-space:nowrap;margin:-8px 0;padding:7px 9px;border:1px solid #2d596d99;}
+  .navlinks .paper-menu summary::-webkit-details-marker{display:none;}
+  .navlinks .paper-menu summary::after{content:" ▾";font-size:.8em;}
+  .navlinks .paper-menu[open] summary::after{content:" ▴";}
+  .navlinks .paper-menu-panel{position:absolute;top:calc(100% + 14px);right:0;z-index:30;min-width:170px;padding:7px;border:1px solid #2d596d;background:#071723;box-shadow:0 14px 32px #0008;}
+  .navlinks .paper-menu-panel a{display:block;padding:9px 11px;color:#91bacc;}
+  .navlinks .paper-menu-panel a:hover,.navlinks .paper-menu-panel a:focus-visible{background:#0b2b3a;color:#d9f8ff;outline:none;}
+  body.bright .navlinks .paper-menu-panel{border-color:#a9cbd1;background:#f3f9f8;box-shadow:0 14px 32px #31576a26;}
+  body.bright .navlinks .paper-menu summary{border-color:#a9cbd199;}
+  body.bright .navlinks .paper-menu-panel a{color:#365f6e;}
+  body.bright .navlinks .paper-menu-panel a:hover,body.bright .navlinks .paper-menu-panel a:focus-visible{background:#dceff0;color:#164c5d;}
 </style>
 
 
@@ -855,6 +869,15 @@
       <a href="#direct-results">Direct Results</a>
       <a href="#agentic-results">Agentic Results</a>
       <a href="#citation">Citation</a>
+      <details class="paper-menu">
+        <summary>Other Papers</summary>
+        <div class="paper-menu-panel">
+          <a href="https://omnisch.com/">OmniSch</a>
+          <a href="../index.html">OmniLayout</a>
+          <a href="../routing/index.html">OmniRouting</a>
+          <a href="../mech/index.html">OmniMech</a>
+        </div>
+      </details>
     </div>
     <div class="nav-actions">
       <button class="theme-toggle" type="button" aria-label="Switch to bright theme" aria-pressed="false"><span>Bright</span></button>
