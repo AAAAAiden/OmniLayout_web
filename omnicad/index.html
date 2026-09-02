@@ -843,14 +843,6 @@
   window.addEventListener('load', () => requestAnimationFrame(omnicadScrollTopInstant), { once: true });
 </script>
 
-  <style id="project-navigation">
-    .project-menu{position:relative}
-    .project-menu summary{list-style:none;cursor:pointer;padding:8px 11px;border:1px solid #31576a;color:#bfeef7;font:700 10px "Courier New",monospace;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
-    .project-menu summary::-webkit-details-marker{display:none}.project-menu summary::after{content:" +"}.project-menu[open] summary::after{content:" −"}
-    .project-menu-links{position:absolute;z-index:40;right:0;top:calc(100% + 8px);min-width:170px;padding:7px;background:#071723;border:1px solid #31576a;box-shadow:0 14px 30px #0008;display:grid}
-    .project-menu-links a{padding:9px 10px;color:#91bacc;font:700 11px "Courier New",monospace;white-space:nowrap}.project-menu-links a:hover{color:#fff;background:#0b2b3a}.project-menu-links a.active{color:#3ee8ff}
-    body.bright .project-menu summary{background:#fff;color:#087f96;border-color:#92bdc5}body.bright .project-menu-links{background:#fff;border-color:#92bdc5;box-shadow:0 14px 30px #31576a33}body.bright .project-menu-links a{color:#365f6e}body.bright .project-menu-links a:hover{color:#087f96;background:#edf6f5}body.bright .project-menu-links a.active{color:#087f96}
-  </style>
 </head>
 <body>
   <nav class="nav shell">
@@ -864,16 +856,6 @@
       <a href="#citation">Citation</a>
     </div>
     <div class="nav-actions">
-      <details class="project-menu">
-        <summary>Projects</summary>
-        <div class="project-menu-links">
-          <a href="https://omnisch.com/">OmniSch</a>
-          <a href="../">OmniLayout</a>
-          <a href="../routing/">OmniRouting</a>
-          <a href="../mech/">OmniMech</a>
-          <a class="active" href="./" aria-current="page">OmniCAD</a>
-        </div>
-      </details>
       <button class="theme-toggle" type="button" aria-label="Switch to bright theme" aria-pressed="false"><span>Bright</span></button>
       <a href="./public/omnicad-paper.pdf">Paper PDF ↗</a>
     </div>
@@ -1100,7 +1082,7 @@
     (() => {
       const body=document.body;
       const toggle=document.querySelector('.theme-toggle');
-      const saved='dark';
+      const saved=localStorage.getItem('omnicad-theme');
       const apply=bright=>{body.classList.toggle('bright',bright);toggle?.setAttribute('aria-pressed',String(bright));toggle?.setAttribute('aria-label',bright?'Switch to dark theme':'Switch to bright theme');window.dispatchEvent(new CustomEvent('omnicad-themechange',{detail:{bright}}));};
       apply(saved==='bright');
       toggle?.addEventListener('click',()=>{const bright=!body.classList.contains('bright');localStorage.setItem('omnicad-theme',bright?'bright':'dark');apply(bright);});
