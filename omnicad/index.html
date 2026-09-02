@@ -521,6 +521,8 @@
      The benchmark overview is exempted below because it must keep the paper's authored colors. */
 
   /* Qualitative Placement Examples embeds the existing interactive 3D site; surrounding layout stays OmniLayout. */
+  #showcase .showcase-head{display:block;margin-bottom:28px}
+  #showcase .viewer-instructions{margin:0 0 14px}
   .qualitative-3d-wrap{margin:0;width:100%;height:auto;min-height:530px;border:0;background:transparent;overflow:hidden;overflow-anchor:none;}
   .qualitative-3d-wrap iframe{display:block;width:100%;height:530px;border:0;background:transparent;overflow:hidden;}
   body.bright .qualitative-3d-wrap{border:0;background:transparent;}
@@ -889,8 +891,8 @@
         <div class="kicker light">Qualitative results</div>
         <div class="showcase-head">
           <h2>Qualitative assembly examples</h2>
-          <p class="copy">Interactive OmniCAD assembly cases. Drag to rotate, scroll to zoom, and pan within each 3D result.</p>
         </div>
+        <p class="copy viewer-instructions">Interactive OmniCAD assembly cases. Drag to rotate, scroll to zoom, and pan within each 3D result.</p>
         <div class="qualitative-3d-wrap">
           <iframe
             id="qualitative3dFrame"
