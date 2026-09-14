@@ -361,8 +361,8 @@
     body:not(.bright) .drawing-panel img{filter:invert(.92) hue-rotate(180deg) brightness(1.08) contrast(1.08);background:transparent}
   </style>
 <style>
-    /* Larger top tabs and icon-only theme control. */
-    .navlinks{font-size:15px;font-weight:700;gap:34px}
+    /* Benchmark links and icon-only theme control. */
+    .navlinks{font-size:13px;font-weight:600;gap:6px}
     .navpaper{font-size:14px}
     .theme-toggle{width:38px;height:38px;padding:0;display:grid;place-items:center;border-radius:50%;font-size:0}
     .theme-toggle span,.theme-toggle::before{display:none}
@@ -371,23 +371,22 @@
     @media(max-width:900px){.theme-toggle{padding:0}}
   </style>
 <style>
-    /* Full-width translucent sticky header with content kept on the page grid. */
-    .nav{width:100%;max-width:none;padding-inline:24px;margin:0;background:#071723b8;border-color:#2d596d99;box-shadow:0 1px 0 #3ee8ff12;backdrop-filter:blur(14px) saturate(1.15);-webkit-backdrop-filter:blur(14px) saturate(1.15)}
+    /* Match the shared benchmark link layout while keeping the blueprint colors. */
+    .nav{width:100%;max-width:none;height:auto;min-height:58px;gap:24px;padding:0 5vw;margin:0;background:#071723b8;border-color:#2d596d99;box-shadow:0 1px 0 #3ee8ff12;backdrop-filter:blur(14px) saturate(1.15);-webkit-backdrop-filter:blur(14px) saturate(1.15)}
     body.bright .nav{background:#f3f9f8b8;border-color:#a9cbd199;box-shadow:0 1px 0 #087f9614}
     .navlinks a,.nav-actions a,.nav>.wordmark{white-space:nowrap}
-    @media(max-width:1250px){
-      .nav{height:auto;min-height:84px;display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;gap:12px 24px;padding-top:13px;padding-bottom:11px}
-      .nav>.wordmark{grid-column:1;grid-row:1}
-      .nav-actions{grid-column:3;grid-row:1}
-      .navlinks{display:flex;grid-column:1/-1;grid-row:2;justify-content:center;gap:clamp(18px,4vw,46px);font-size:14px}
-    }
-    @media(max-width:700px){
-      .nav{grid-template-columns:1fr auto;padding-block:11px 9px;gap:10px 14px}
+    .navlinks{display:flex;align-items:center;min-width:0;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+    .navlinks::-webkit-scrollbar{display:none}
+    .navlinks a{padding:7px 13px;flex-shrink:0}
+    .nav-actions{flex-shrink:0}
+    @media(max-width:620px){
+      .nav{justify-content:center;gap:8px;padding:0 8px}
+      .nav>.wordmark{display:none}
+      .navlinks{gap:2px;margin-left:0}
+      .navlinks a{padding:6px 7px;font-size:11px}
+      .nav-actions{gap:0}
       .nav-actions>a{display:none}
-      .navlinks{justify-content:flex-start;overflow-x:auto;gap:24px;padding-bottom:3px;scrollbar-width:none}
-      .navlinks::-webkit-scrollbar{display:none}
     }
-    @media(max-width:560px){.nav{padding-inline:14px}}
   </style>
 <style>
     /* Quantitative benchmark tables from Tables 2 and 3 of the paper. */
@@ -541,19 +540,6 @@
     .metrics-row.four{grid-template-columns:1fr;}
   }
 
-  /* Cross-paper links requested after Citation; scoped to the new dropdown only. */
-  .navlinks .paper-menu{position:relative;}
-  .navlinks .paper-menu summary{list-style:none;cursor:pointer;white-space:nowrap;margin:-8px 0;padding:7px 9px;border:1px solid #2d596d99;}
-  .navlinks .paper-menu summary::-webkit-details-marker{display:none;}
-  .navlinks .paper-menu summary::after{content:" ▾";font-size:.8em;}
-  .navlinks .paper-menu[open] summary::after{content:" ▴";}
-  .navlinks .paper-menu-panel{position:absolute;top:calc(100% + 14px);right:0;z-index:30;min-width:170px;padding:7px;border:1px solid #2d596d;background:#071723;box-shadow:0 14px 32px #0008;}
-  .navlinks .paper-menu-panel a{display:block;padding:9px 11px;color:#91bacc;}
-  .navlinks .paper-menu-panel a:hover,.navlinks .paper-menu-panel a:focus-visible{background:#0b2b3a;color:#d9f8ff;outline:none;}
-  body.bright .navlinks .paper-menu-panel{border-color:#a9cbd1;background:#f3f9f8;box-shadow:0 14px 32px #31576a26;}
-  body.bright .navlinks .paper-menu summary{border-color:#a9cbd199;}
-  body.bright .navlinks .paper-menu-panel a{color:#365f6e;}
-  body.bright .navlinks .paper-menu-panel a:hover,body.bright .navlinks .paper-menu-panel a:focus-visible{background:#dceff0;color:#164c5d;}
 </style>
 
 
@@ -860,24 +846,15 @@
 
 </head>
 <body>
-  <nav class="nav shell">
-    <a class="wordmark" href="#top">OmniCAD</a>
+  <nav class="nav shell" aria-label="Benchmark navigation">
+    <span class="wordmark">OmniCAD</span>
     <div class="navlinks">
-      <a href="#showcase">Qualitative Results</a>
-      <a href="#benchmark">Benchmark</a>
-      <a href="#tasks">Tasks</a>
-      <a href="#direct-results">Direct Results</a>
-      <a href="#agentic-results">Agentic Results</a>
+      <a href="https://omnisch.com/">OmniSch</a>
+      <a href="../">OmniLayout</a>
+      <a href="../routing/">OmniRouting</a>
+      <a href="../mech/">OmniMech</a>
+      <a href="./" aria-current="page">OmniCAD</a>
       <a href="#citation">Citation</a>
-      <details class="paper-menu">
-        <summary>Other Papers</summary>
-        <div class="paper-menu-panel">
-          <a href="https://omnisch.com/">OmniSch</a>
-          <a href="../index.html">OmniLayout</a>
-          <a href="../routing/index.html">OmniRouting</a>
-          <a href="../mech/index.html">OmniMech</a>
-        </div>
-      </details>
     </div>
     <div class="nav-actions">
       <button class="theme-toggle" type="button" aria-label="Switch to bright theme" aria-pressed="false"><span>Bright</span></button>
