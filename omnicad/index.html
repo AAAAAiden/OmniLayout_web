@@ -841,22 +841,19 @@
   window.addEventListener('load', () => requestAnimationFrame(omnicadScrollTopInstant), { once: true });
 </script>
 
+<link rel="stylesheet" href="../site-nav.css">
 </head>
 <body>
-  <nav class="nav shell" aria-label="Benchmark navigation">
-    <span class="wordmark">OmniCAD</span>
-    <div class="navlinks">
+  <nav class="site-nav" aria-label="Benchmark navigation">
+    <a class="site-brand" href="../">Omni<span>EDA</span></a>
+    <div class="site-tabs">
       <a href="https://omnisch.com/">OmniSch</a>
       <a href="../">OmniLayout</a>
       <a href="../routing/">OmniRouting</a>
       <a href="../mech/">OmniMech</a>
-      <a href="./" aria-current="page">OmniCAD</a>
-      <a href="#citation">Citation</a>
+      <a class="active" aria-current="page" href="./">OmniCAD</a>
     </div>
-    <div class="nav-actions">
-      <button class="theme-toggle" type="button" aria-label="Switch to bright theme" aria-pressed="false"><span>Bright</span></button>
-      <a href="./public/omnicad-paper.pdf">Paper PDF ↗</a>
-    </div>
+    <button class="theme-toggle" type="button" aria-label="Switch to bright theme" aria-pressed="false"><span>Bright</span></button>
   </nav>
 
   <main>

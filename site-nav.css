@@ -1,0 +1,55 @@
+/* Shared benchmark navigation, based on the OmniLayout header. */
+.site-nav {
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 58px;
+  padding: 0 5vw;
+  color: #eef0ff;
+  background: rgba(15, 12, 41, 0.96);
+  border-bottom: 1px solid rgba(165, 180, 252, 0.16);
+  backdrop-filter: blur(16px);
+}
+.site-brand {
+  flex-shrink: 0;
+  color: #f3f4ff;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.site-brand span { color: #a5b4fc; }
+.site-tabs { min-width: 0; margin-left: auto; display: flex; align-items: center; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.site-tabs::-webkit-scrollbar { display: none; }
+.site-tabs a {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 7px 13px;
+  border-radius: 999px;
+  color: #c7c7e8;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color .16s ease, background .16s ease;
+}
+.site-tabs a:hover { color: #fff; }
+.site-tabs a.active {
+  color: #fff;
+  background: rgba(165, 180, 252, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(165, 180, 252, 0.22);
+}
+@media (max-width: 620px) {
+  .site-nav { justify-content: center; gap: 8px; padding: 0 8px; }
+  .site-brand { display: none; }
+  .site-tabs { gap: 2px; margin-left: 0; }
+  .site-tabs a { padding: 6px 7px; font-size: 11px; }
+}
+
+.site-nav .theme-toggle { flex-shrink: 0; margin: 0; }
+.site-nav a:focus-visible, .site-nav button:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
