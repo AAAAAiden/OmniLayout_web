@@ -623,6 +623,14 @@
     body:not(.bright) #benchmark .card>img{filter:invert(.9) hue-rotate(180deg) brightness(1.12) saturate(1.18) contrast(1.06);background:transparent}
   </style>
 <link rel="stylesheet" href="../site-nav.css">
+<style id="intro-video-style">
+  .intro-video.shell { max-width: 960px; margin: 0 auto 64px; text-align: center; scroll-margin-top: 84px; }
+  .intro-video h2 { margin: 0 0 20px; font-size: clamp(24px, 3vw, 36px); line-height: 1.2; letter-spacing: -.02em; color: var(--ink); }
+  .intro-video-player { display: block; width: 100%; height: auto; background: #020b10; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 8px 28px #0002; }
+  .intro-video-player:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+  .intro-video-caption { margin: 12px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .intro-video-caption a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+</style>
 </head>
 <body>
   <nav class="site-nav" aria-label="Benchmark navigation">
@@ -641,7 +649,16 @@
     <!-- <section class="statsband"><div class="shell stats"><div class="stat"><strong>251K</strong><span>drawing and<br>model pairs</span></div><div class="stat"><strong>15.62</strong><span>annotations<br>per drawing</span></div><div class="stat"><strong>28</strong><span>renders<br>per model</span></div><div class="stat"><strong>4</strong><span>evaluation<br>tasks</span></div></div></section> -->
     
     
-        <section class="section showcase" id="showcase">
+    <section class="intro-video shell" id="introduction" aria-labelledby="intro-video-title">
+      <h2 id="intro-video-title">Introducing OmniMech</h2>
+      <video class="intro-video-player" controls playsinline preload="metadata" width="640" height="368" aria-label="OmniMech introduction video" aria-describedby="intro-video-caption">
+        <source src="../media/omnimech-introduction.mp4" type="video/mp4">
+        Your browser does not support embedded video. <a href="../media/omnimech-introduction.mp4">Open the OmniMech introduction video</a>.
+      </video>
+      <p class="intro-video-caption" id="intro-video-caption">1 min 56 sec &middot; <a href="../media/omnimech-introduction.mp4" target="_blank" rel="noopener noreferrer">Open video in a new tab</a></p>
+    </section>
+
+    <section class="section showcase" id="showcase">
       <div class="shell">
         <div class="kicker light">Tested Upon State-of-the-Art LLMs</div>
         <div class="showcase-head"><h2>Qualititive Results</h2><p class="copy">Hover the input drawing to inspect details. Drag models to orbit and scroll to zoom.</p></div>
