@@ -198,6 +198,16 @@ a {
   box-shadow: 0 6px 20px rgba(6, 182, 212, 0.48);
 }
 
+.pill-hf {
+  color: #713f12;
+  background: linear-gradient(135deg, #fbbf24, #fde68a);
+  box-shadow: 0 3px 12px rgba(251, 191, 36, 0.3);
+}
+
+.pill-hf:hover {
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.48);
+}
+
 .pill-disabled {
   color: #6b7280;
   background: #e5e7eb;

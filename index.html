@@ -164,8 +164,8 @@ body {
 .pill-video:hover { box-shadow: 0 6px 20px rgba(99,102,241,.36); }
 .pill-data { background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 50%, #67e8f9 100%); color: #0e4e5a; box-shadow: 0 3px 12px rgba(6,182,212,.30); }
 .pill-data:hover { box-shadow: 0 6px 20px rgba(6,182,212,.48); }
-.pill-lb { background: #e5e7eb; color: #6b7280; box-shadow: none; cursor: not-allowed; opacity: 0.88; }
-.pill-lb:hover { box-shadow: none; transform: none; }
+.pill-lb { background: linear-gradient(135deg, #fbbf24, #fde68a); color: #713f12; box-shadow: 0 3px 12px rgba(251,191,36,.30); }
+.pill-lb:hover { box-shadow: 0 6px 20px rgba(251,191,36,.48); }
 .pill svg { width: 15px; height: 15px; flex-shrink: 0; }
 
 /* 鈹€鈹€ AUTHOR LINE 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
@@ -1041,7 +1041,7 @@ document.getElementById('app').innerHTML = `
       <a class="pill pill-paper" href="https://arxiv.org/abs/2607.03261" target="_blank" rel="noopener noreferrer">${IC.arxiv} arXiv</a>
       <a class="pill pill-code" href="#" onclick="showCodeModal(event)">${IC.code} Code</a>
       <a class="pill pill-data" href="#" onclick="showDataModal(event)">${IC.data} Data</a>
-      <a class="pill pill-lb"    href="#" aria-disabled="true" title="To be announced" onclick="event.preventDefault()">${IC.lb} Huggingface</a>
+      <a class="pill pill-lb" href="https://huggingface.co/datasets/OmniEDA/OmniLayout" target="_blank" rel="noopener noreferrer">${IC.lb} Hugging Face</a>
     </div>
   </div>
 </div>
